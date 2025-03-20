@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -46,6 +45,13 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
     existingEntry?.effectivenessRating || 'wenig'
   );
   const [notes, setNotes] = useState(existingEntry?.notes || '');
+
+  // Reset the step counter when opening a new dialog
+  useEffect(() => {
+    if (open) {
+      setCurrentStep(0);
+    }
+  }, [open]);
 
   const handleAddItem = (
     value: string,
@@ -354,7 +360,7 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] p-0">
+      <DialogContent className="sm:max-w-[500px] p-0 rounded-xl">
         <DialogTitle className="px-6 pt-6 pb-2">
           <div className="flex justify-between items-center">
             <span>
@@ -366,16 +372,18 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
           </div>
           <div className="w-full h-1 bg-muted rounded-full mt-4">
             <div 
-              className="h-1 bg-headache rounded-full transition-all duration-300 ease-in-out" 
+              className="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-full transition-all duration-300 ease-in-out" 
               style={{ width: `${progress}%` }}
             />
           </div>
         </DialogTitle>
         
-        <div className="px-6">
+        <div className="px-6 py-4">
           <Card className="border-0 shadow-none">
-            <CardHeader>
-              <CardTitle className="text-xl">{steps[currentStep].title}</CardTitle>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-xl bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
+                {steps[currentStep].title}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {steps[currentStep].content}
@@ -385,13 +393,14 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
                 variant="outline" 
                 onClick={handlePrevStep} 
                 disabled={currentStep === 0}
+                className="shadow-sm hover:shadow-md transition-all duration-300"
               >
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Zurück
               </Button>
               <Button 
                 onClick={handleNextStep}
-                className="bg-headache text-white hover:bg-headache/90"
+                className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:opacity-90 transition-opacity shadow-md hover:shadow-lg"
               >
                 {currentStep === steps.length - 1 ? (
                   <>

@@ -93,7 +93,7 @@ const AnalysisSection = () => {
     { name: 'Unwirksam', value: headacheData.filter(d => d.effectivenessRating === 'nein').length },
   ];
 
-  // Generate colors
+  // Modern color palette
   const COLORS = ['#22c55e', '#f59e0b', '#ef4444'];
 
   return (
@@ -102,9 +102,9 @@ const AnalysisSection = () => {
       <p className="text-muted-foreground">Statistiken und Muster basierend auf Ihren bisherigen Einträgen.</p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="border-none shadow-lg bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 hover:shadow-xl transition-all duration-300">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Schmerzintensität</CardTitle>
+            <CardTitle className="text-lg text-primary">Schmerzintensität</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <ResponsiveContainer width="100%" height={200}>
@@ -123,15 +123,15 @@ const AnalysisSection = () => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="border-none shadow-lg bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 hover:shadow-xl transition-all duration-300">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Schmerzdauer</CardTitle>
+            <CardTitle className="text-lg text-primary">Schmerzdauer</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <ResponsiveContainer width="100%" height={200}>
@@ -150,15 +150,15 @@ const AnalysisSection = () => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="border-none shadow-lg bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 hover:shadow-xl transition-all duration-300">
           <CardHeader className="pb-2">
-            <CardTitle className="text-lg">Medikamenten-Wirksamkeit</CardTitle>
+            <CardTitle className="text-lg text-primary">Medikamenten-Wirksamkeit</CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
             <ResponsiveContainer width="100%" height={200}>
@@ -177,7 +177,7 @@ const AnalysisSection = () => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <Tooltip />
+                <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
