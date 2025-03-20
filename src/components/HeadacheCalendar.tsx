@@ -6,6 +6,7 @@ import { Calendar, X, Plus, ChevronLeft, ChevronRight, Edit } from 'lucide-react
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import HeadacheEntryForm from './HeadacheEntryForm';
+import StepFormDialog from './StepFormDialog';
 import { HeadacheEntry } from '../types';
 
 interface HeadacheCalendarProps {
@@ -24,6 +25,7 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isStepFormOpen, setIsStepFormOpen] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<HeadacheEntry | null>(null);
   const [isEntryDetailsOpen, setIsEntryDetailsOpen] = useState(false);
 
@@ -70,7 +72,7 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
       setSelectedEntry(dayEntries[0]); // Show first entry if multiple exist
       setIsEntryDetailsOpen(true);
     } else {
-      handleAddNewEntry(day);
+      handleAddNewEntryWithSteps(day);
     }
   };
 
@@ -78,6 +80,18 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
     setSelectedDate(day);
     setSelectedEntry(null);
     setIsFormOpen(true);
+    setIsEntryDetailsOpen(false);
+  };
+
+  const handleAddNewEntryWithSteps = (day: Date = new Date()) => {
+    setSelectedDate(day);
+    setSelectedEntry(null);
+    setIsStepFormOpen(true);
+    setIsEntryDetailsOpen(false);
+  };
+
+  const handleEditEntryWithSteps = () => {
+    setIsStepFormOpen(true);
     setIsEntryDetailsOpen(false);
   };
 
@@ -100,6 +114,7 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
       onAddEntry(entry);
     }
     setIsFormOpen(false);
+    setIsStepFormOpen(false);
   };
 
   const getIntensityColor = (intensity: number): string => {
@@ -150,7 +165,7 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
             <ChevronRight className="h-4 w-4" />
           </Button>
           <Button 
-            onClick={() => handleAddNewEntry()} 
+            onClick={() => handleAddNewEntryWithSteps()} 
             className="ml-4 bg-headache text-white hover:bg-headache/90"
             size="sm"
           >
@@ -235,6 +250,17 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
         </DialogContent>
       </Dialog>
 
+      {/* New Step Form Dialog */}
+      {selectedDate && (
+        <StepFormDialog
+          open={isStepFormOpen}
+          onClose={() => setIsStepFormOpen(false)}
+          onSave={handleSaveEntry}
+          selectedDate={selectedDate}
+          existingEntry={selectedEntry || undefined}
+        />
+      )}
+
       {/* Entry Details Dialog */}
       <Dialog open={isEntryDetailsOpen} onOpenChange={setIsEntryDetailsOpen}>
         <DialogContent className="sm:max-w-[500px]">
@@ -243,7 +269,7 @@ const HeadacheCalendar: React.FC<HeadacheCalendarProps> = ({
               <DialogTitle className="flex justify-between items-center">
                 <span>Kopfschmerz-Details</span>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" onClick={handleEditEntry}>
+                  <Button variant="outline" size="sm" onClick={handleEditEntryWithSteps}>
                     <Edit className="h-4 w-4 mr-1" />
                     Bearbeiten
                   </Button>

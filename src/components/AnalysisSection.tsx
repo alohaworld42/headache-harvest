@@ -1,169 +1,187 @@
 
-import React, { useState, useEffect } from 'react';
-import { Calendar, Check, Loader2, BarChart2, Download } from 'lucide-react';
-import { ExtractedData } from '../types';
-import { processImage } from '../utils/imageProcessing';
-import { extractData } from '../utils/dataExtraction';
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { HeadacheEntry } from '@/types';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
+import { getRandomColor } from '@/lib/utils';
 
-interface AnalysisSectionProps {
-  imageFile: File | null;
-  onDataExtracted: (data: ExtractedData) => void;
-}
+const dummyHeadacheData: HeadacheEntry[] = [
+  {
+    id: '1',
+    date: new Date(2023, 0, 5).toISOString(),
+    intensity: 7,
+    duration: 'long',
+    location: ['Stirn', 'Schläfen'],
+    symptoms: ['Übelkeit', 'Lichtempfindlichkeit'],
+    triggers: ['Stress', 'Schlafmangel'],
+    medications: ['Ibuprofen'],
+    effectivenessRating: 'wenig',
+    notes: 'Sehr starker Kopfschmerz nach langer Arbeit am Computer',
+  },
+  {
+    id: '2',
+    date: new Date(2023, 0, 12).toISOString(),
+    intensity: 4,
+    duration: 'medium',
+    location: ['Hinterkopf'],
+    symptoms: ['Nackenschmerzen'],
+    triggers: ['schlechte Haltung'],
+    medications: ['Paracetamol'],
+    effectivenessRating: 'ja',
+    notes: 'Besserte sich nach Ruhepause',
+  },
+  {
+    id: '3',
+    date: new Date(2023, 0, 18).toISOString(),
+    intensity: 8,
+    duration: 'long',
+    location: ['einseitig links', 'pulsierend'],
+    symptoms: ['Übelkeit', 'Erbrechen', 'Lichtempfindlichkeit'],
+    triggers: ['Wetterwechsel'],
+    medications: ['Sumatriptan'],
+    effectivenessRating: 'ja',
+    notes: 'Typische Migräne mit Aura',
+  },
+  {
+    id: '4',
+    date: new Date(2023, 0, 25).toISOString(),
+    intensity: 3,
+    duration: 'short',
+    location: ['Stirn'],
+    symptoms: ['leichte Übelkeit'],
+    triggers: ['Koffein-Entzug'],
+    medications: ['Ibuprofen'],
+    effectivenessRating: 'ja',
+    notes: 'Trat morgens nach dem Aufstehen auf',
+  },
+  {
+    id: '5',
+    date: new Date(2023, 0, 30).toISOString(),
+    intensity: 6,
+    duration: 'medium',
+    location: ['Gesamter Kopf'],
+    symptoms: ['Schwindelgefühl'],
+    triggers: ['Alkohol'],
+    medications: ['Aspirin'],
+    effectivenessRating: 'wenig',
+    notes: 'Nach Weinprobe am Vorabend',
+  },
+];
 
-const AnalysisSection: React.FC<AnalysisSectionProps> = ({ imageFile, onDataExtracted }) => {
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [analysisComplete, setAnalysisComplete] = useState(false);
-  const [monthDetected, setMonthDetected] = useState<string>('');
-  const [entriesCount, setEntriesCount] = useState(0);
+const AnalysisSection = () => {
+  // Normally would use real data from props or context
+  const headacheData = dummyHeadacheData;
 
-  useEffect(() => {
-    if (imageFile) {
-      analyzeImage(imageFile);
-    }
-  }, [imageFile]);
+  // Calculate intensity distribution
+  const intensityData = [
+    { name: 'Leicht (1-3)', value: headacheData.filter(d => d.intensity <= 3).length },
+    { name: 'Mittel (4-6)', value: headacheData.filter(d => d.intensity >= 4 && d.intensity <= 6).length },
+    { name: 'Stark (7-10)', value: headacheData.filter(d => d.intensity >= 7).length },
+  ];
 
-  const analyzeImage = async (file: File) => {
-    setIsProcessing(true);
-    setProgress(0);
-    setAnalysisComplete(false);
+  // Calculate duration distribution
+  const durationData = [
+    { name: 'Kurz (<6h)', value: headacheData.filter(d => d.duration === 'short').length },
+    { name: 'Mittel (6-12h)', value: headacheData.filter(d => d.duration === 'medium').length },
+    { name: 'Lang (>12h)', value: headacheData.filter(d => d.duration === 'long').length },
+  ];
 
-    try {
-      // Simulate OCR and image processing with progress updates
-      setProgress(10);
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      setProgress(30);
-      await new Promise(resolve => setTimeout(resolve, 600));
-      
-      setProgress(60);
-      await new Promise(resolve => setTimeout(resolve, 700));
-      
-      // Simulate processing the image
-      const processedData = await processImage(file);
-      
-      setProgress(80);
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // Extract data from processed image
-      const extractedData = await extractData(processedData);
-      
-      setProgress(100);
-      await new Promise(resolve => setTimeout(resolve, 400));
-      
-      // Mock data for demonstration
-      const mockData: ExtractedData = {
-        monthYear: 'März 2024',
-        entries: [
-          {
-            id: '1',
-            date: '2024-03-05',
-            intensity: 7,
-            duration: 'medium',
-            location: ['pulsierend', 'einseitig'],
-            symptoms: ['Übelkeit', 'Lichtscheu'],
-            triggers: ['Stress'],
-            medications: ['Ibuprofen'],
-            effectivnessRating: 'ja'
-          },
-          {
-            id: '2',
-            date: '2024-03-12',
-            intensity: 5,
-            duration: 'short',
-            location: ['drückend'],
-            symptoms: ['Schwindel'],
-            triggers: ['Wetterwechsel'],
-            medications: ['Paracetamol'],
-            effectivnessRating: 'wenig'
-          },
-          {
-            id: '3',
-            date: '2024-03-18',
-            intensity: 8,
-            duration: 'long',
-            location: ['pulsierend', 'beidseitig'],
-            symptoms: ['Übelkeit', 'Erbrechen', 'Lichtscheu'],
-            triggers: ['Schlafmangel'],
-            medications: ['Sumatriptan'],
-            effectivnessRating: 'ja'
-          }
-        ]
-      };
-      
-      setMonthDetected(mockData.monthYear);
-      setEntriesCount(mockData.entries.length);
-      onDataExtracted(mockData);
-      setAnalysisComplete(true);
-    } catch (error) {
-      console.error('Error analyzing image:', error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
+  // Calculate medication effectiveness
+  const effectivenessData = [
+    { name: 'Wirksam', value: headacheData.filter(d => d.effectivenessRating === 'ja').length },
+    { name: 'Wenig wirksam', value: headacheData.filter(d => d.effectivenessRating === 'wenig').length },
+    { name: 'Unwirksam', value: headacheData.filter(d => d.effectivenessRating === 'nein').length },
+  ];
 
-  if (!imageFile) return null;
+  // Generate colors
+  const COLORS = ['#22c55e', '#f59e0b', '#ef4444'];
 
   return (
-    <div className="w-full max-w-3xl mx-auto mt-8 animate-fade-up" style={{ animationDelay: '0.2s' }}>
-      <div className="glass-morphism rounded-xl p-6">
-        <h3 className="text-xl font-medium mb-4 flex items-center">
-          <Calendar className="mr-2 h-5 w-5 text-headache" />
-          Analyse des Kopfschmerz-Kalenders
-        </h3>
-
-        {isProcessing ? (
-          <div className="text-center py-8">
-            <Loader2 className="h-10 w-10 text-headache mx-auto animate-spin mb-4" />
-            <h4 className="text-lg font-medium mb-2">Verarbeite Ihren Kalender...</h4>
-            <p className="text-sm text-muted-foreground mb-6">
-              Wir extrahieren Ihre Kopfschmerzdaten für die Analyse
-            </p>
-            
-            <div className="w-full bg-secondary rounded-full h-2 mb-2">
-              <div 
-                className="bg-headache h-2 rounded-full transition-all duration-300 ease-out"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            <p className="text-xs text-muted-foreground">{progress}% abgeschlossen</p>
-          </div>
-        ) : analysisComplete ? (
-          <div className="text-center py-6">
-            <div className="bg-green-100 dark:bg-green-900/20 p-3 rounded-full inline-flex mb-4">
-              <Check className="h-8 w-8 text-green-600 dark:text-green-400" />
-            </div>
-            
-            <h4 className="text-lg font-medium mb-1">Analyse abgeschlossen!</h4>
-            <p className="text-muted-foreground mb-6">
-              Ihr Kopfschmerz-Kalender für <span className="font-medium">{monthDetected}</span> wurde erfolgreich analysiert.
-            </p>
-            
-            <div className="flex flex-col gap-4 mb-6 text-left">
-              <div className="flex items-center justify-between px-4 py-3 bg-secondary/50 rounded-lg">
-                <span>Erkannter Monat</span>
-                <span className="font-medium">{monthDetected}</span>
-              </div>
-              
-              <div className="flex items-center justify-between px-4 py-3 bg-secondary/50 rounded-lg">
-                <span>Gefundene Einträge</span>
-                <span className="font-medium">{entriesCount}</span>
-              </div>
-            </div>
-            
-            <div className="flex justify-center gap-4">
-              <button className="headache-btn bg-headache text-white">
-                <BarChart2 className="mr-2 h-4 w-4" />
-                Statistiken anzeigen
-              </button>
-              
-              <button className="headache-btn bg-secondary text-foreground">
-                <Download className="mr-2 h-4 w-4" />
-                Daten exportieren
-              </button>
-            </div>
-          </div>
-        ) : null}
+    <div className="space-y-6">
+      <h2 className="text-2xl font-semibold">Kopfschmerz-Analyse</h2>
+      <p className="text-muted-foreground">Statistiken und Muster basierend auf Ihren bisherigen Einträgen.</p>
+      
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Schmerzintensität</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={intensityData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({name, percent}) => percent > 0 ? `${name}: ${(percent * 100).toFixed(0)}%` : ''}
+                >
+                  {intensityData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Schmerzdauer</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={durationData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({name, percent}) => percent > 0 ? `${name}: ${(percent * 100).toFixed(0)}%` : ''}
+                >
+                  {durationData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+        
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg">Medikamenten-Wirksamkeit</CardTitle>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={effectivenessData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label={({name, percent}) => percent > 0 ? `${name}: ${(percent * 100).toFixed(0)}%` : ''}
+                >
+                  {effectivenessData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+              </PieChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
