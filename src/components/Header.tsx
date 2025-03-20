@@ -1,17 +1,17 @@
 
 import React from 'react';
-import { FileText, BarChart2, Info } from 'lucide-react';
+import { FileText, BarChart2, Info, Calendar } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
     <header className="w-full py-4 px-6 flex justify-between items-center glass-morphism animate-fade-in">
       <div className="flex items-center gap-3">
         <div className="bg-headache rounded-full p-2 shadow-md">
-          <FileText className="h-6 w-6 text-white" />
+          <Calendar className="h-6 w-6 text-white" />
         </div>
         <div>
           <h1 className="text-xl font-semibold tracking-tight">Kopfschmerz-Kalender</h1>
-          <p className="text-sm text-muted-foreground">Analyse & Tracking</p>
+          <p className="text-sm text-muted-foreground">Tracking & Analyse</p>
         </div>
       </div>
       

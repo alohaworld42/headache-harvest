@@ -1,4 +1,3 @@
-
 export interface HeadacheEntry {
   id: string;
   date: string;
@@ -8,7 +7,7 @@ export interface HeadacheEntry {
   symptoms?: string[];
   triggers?: string[];
   medications?: string[];
-  effectivnessRating?: 'ja' | 'nein' | 'wenig'; // yes, no, little
+  effectivenessRating?: 'ja' | 'nein' | 'wenig'; // yes, no, little
   notes?: string;
 }
 
@@ -28,6 +27,7 @@ export interface AnalysisResult {
   durationDistribution: Record<string, number>;
 }
 
+// Keeping this for compatibility with existing components
 export interface ExtractedData {
   monthYear: string;
   entries: HeadacheEntry[];
