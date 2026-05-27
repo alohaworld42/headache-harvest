@@ -46,12 +46,22 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
   );
   const [notes, setNotes] = useState(existingEntry?.notes || '');
 
-  // Reset the step counter when opening a new dialog
   useEffect(() => {
-    if (open) {
-      setCurrentStep(0);
-    }
-  }, [open]);
+    if (!open) return;
+    setCurrentStep(0);
+    setIntensity(existingEntry?.intensity ?? 5);
+    setDuration(existingEntry?.duration ?? 'medium');
+    setLocation(existingEntry?.location ?? []);
+    setNewLocation('');
+    setSymptoms(existingEntry?.symptoms ?? []);
+    setNewSymptom('');
+    setTriggers(existingEntry?.triggers ?? []);
+    setNewTrigger('');
+    setMedications(existingEntry?.medications ?? []);
+    setNewMedication('');
+    setEffectivenessRating(existingEntry?.effectivenessRating ?? 'wenig');
+    setNotes(existingEntry?.notes ?? '');
+  }, [open, existingEntry]);
 
   const handleAddItem = (
     value: string,
@@ -323,7 +333,27 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
     }
   ];
 
+  const commitPendingInput = () => {
+    if (newLocation.trim()) {
+      setLocation(prev => [...prev, newLocation.trim()]);
+      setNewLocation('');
+    }
+    if (newSymptom.trim()) {
+      setSymptoms(prev => [...prev, newSymptom.trim()]);
+      setNewSymptom('');
+    }
+    if (newTrigger.trim()) {
+      setTriggers(prev => [...prev, newTrigger.trim()]);
+      setNewTrigger('');
+    }
+    if (newMedication.trim()) {
+      setMedications(prev => [...prev, newMedication.trim()]);
+      setNewMedication('');
+    }
+  };
+
   const handleNextStep = () => {
+    commitPendingInput();
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -338,17 +368,24 @@ const StepFormDialog: React.FC<StepFormDialogProps> = ({
   };
 
   const handleSubmit = () => {
+    const finalLocation = newLocation.trim() ? [...location, newLocation.trim()] : location;
+    const finalSymptoms = newSymptom.trim() ? [...symptoms, newSymptom.trim()] : symptoms;
+    const finalTriggers = newTrigger.trim() ? [...triggers, newTrigger.trim()] : triggers;
+    const finalMedications = newMedication.trim() ? [...medications, newMedication.trim()] : medications;
+
     const entry: HeadacheEntry = {
-      id: existingEntry?.id || `headache-${Date.now()}`,
+      id: existingEntry?.id || (typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : `headache-${Date.now()}-${Math.random().toString(36).slice(2)}`),
       date: selectedDate.toISOString(),
       intensity,
       duration,
-      location: location.length > 0 ? location : undefined,
-      symptoms: symptoms.length > 0 ? symptoms : undefined,
-      triggers: triggers.length > 0 ? triggers : undefined,
-      medications: medications.length > 0 ? medications : undefined,
-      effectivenessRating: medications.length > 0 ? effectivenessRating : undefined,
-      notes: notes.trim() || undefined
+      location: finalLocation.length > 0 ? finalLocation : undefined,
+      symptoms: finalSymptoms.length > 0 ? finalSymptoms : undefined,
+      triggers: finalTriggers.length > 0 ? finalTriggers : undefined,
+      medications: finalMedications.length > 0 ? finalMedications : undefined,
+      effectivenessRating: finalMedications.length > 0 ? effectivenessRating : undefined,
+      notes: notes.trim() || undefined,
     };
 
     onSave(entry);

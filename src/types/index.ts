@@ -1,34 +1,18 @@
-export interface HeadacheEntry {
-  id: string;
-  date: string;
-  intensity: number; // 1-10
-  duration: 'short' | 'medium' | 'long'; // less than 6h, 6-12h, more than 12h
-  location?: string[];
-  symptoms?: string[];
-  triggers?: string[];
-  medications?: string[];
-  effectivenessRating?: 'ja' | 'nein' | 'wenig'; // yes, no, little
-  notes?: string;
-}
+import { z } from 'zod';
 
-export interface MonthData {
-  month: string;
-  year: number;
-  entries: HeadacheEntry[];
-}
+export const HeadacheEntrySchema = z.object({
+  id: z.string(),
+  date: z.string(),
+  intensity: z.number().min(1).max(10),
+  duration: z.enum(['short', 'medium', 'long']),
+  location: z.array(z.string()).optional(),
+  symptoms: z.array(z.string()).optional(),
+  triggers: z.array(z.string()).optional(),
+  medications: z.array(z.string()).optional(),
+  effectivenessRating: z.enum(['ja', 'nein', 'wenig']).optional(),
+  notes: z.string().optional(),
+});
 
-export interface AnalysisResult {
-  frequencyByDay: Record<number, number>;
-  intensityAverage: number;
-  commonTriggers: Record<string, number>;
-  commonSymptoms: Record<string, number>;
-  effectiveMedications: Record<string, number>;
-  ineffectiveMedications: Record<string, number>;
-  durationDistribution: Record<string, number>;
-}
+export type HeadacheEntry = z.infer<typeof HeadacheEntrySchema>;
 
-// Keeping this for compatibility with existing components
-export interface ExtractedData {
-  monthYear: string;
-  entries: HeadacheEntry[];
-}
+export const HeadacheEntryArraySchema = z.array(HeadacheEntrySchema);
