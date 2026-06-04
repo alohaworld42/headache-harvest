@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { FileText, Activity, Calendar, Info } from 'lucide-react';
+import { Activity, Info } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -16,16 +16,9 @@ const Footer: React.FC = () => {
           </p>
         </div>
         
-        <div className="flex gap-6">
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Datenschutz
-          </a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Impressum
-          </a>
-          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Hilfe
-          </a>
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Info className="h-4 w-4" />
+          <span>Alle Daten bleiben lokal in deinem Browser gespeichert.</span>
         </div>
       </div>
     </footer>

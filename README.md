@@ -1,69 +1,47 @@
-# Welcome to your Lovable project
+# Kopfschmerz-Kalender (Headache Harvest)
 
-## Project info
+Eine kleine Web-App zum Erfassen und Analysieren von Kopfschmerzen. Trage deine
+Kopfschmerz-Episoden in einen Kalender ein und erkenne über die Statistik-Ansicht
+Muster bei Auslösern, Symptomen, Dauer und Intensität.
 
-**URL**: https://lovable.dev/projects/e03668e8-8f51-4b34-8aa8-38a61d013153
+**Privacy first:** Alle Daten bleiben ausschließlich lokal im `localStorage` deines
+Browsers. Es gibt kein Backend, nichts wird hochgeladen.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 📅 **Kalender** – monatliche Übersicht, farbcodiert nach Schmerzintensität
+- 📝 **Mehrstufiges Eingabeformular** – Intensität, Dauer, Lokalisation, Symptome,
+  Auslöser, Medikamente und deren Wirksamkeit, plus Notizen
+- 📊 **Statistiken** – Diagramme zu Intensität, Dauer, häufigen Auslösern und
+  Begleitsymptomen, mit automatisch abgeleiteten Insights
+- 💾 **Export / Import** – sichere deine Einträge als JSON und spiele sie wieder ein
+- 🌙 Dark-Mode-Unterstützung
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e03668e8-8f51-4b34-8aa8-38a61d013153) and start prompting.
+Vite · React 18 · TypeScript · React Router · shadcn/ui (Radix) · Tailwind CSS ·
+Recharts · date-fns
 
-Changes made via Lovable will be committed automatically to this repo.
+## Lokale Entwicklung
 
-**Use your preferred IDE**
+Voraussetzung: Node.js 20+.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```bash
+npm install
+npm run dev      # Dev-Server (http://localhost:8080/headache-harvest/)
+npm run build    # Produktions-Build nach dist/
+npm run preview  # Build lokal vorschauen
+npm run lint     # ESLint
 ```
 
-**Edit a file directly in GitHub**
+## Deployment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Die App wird automatisch auf **GitHub Pages** veröffentlicht. Jeder Push auf `main`
+löst den Workflow [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml) aus,
+der die App baut und deployt.
 
-**Use GitHub Codespaces**
+Live: https://alohaworld42.github.io/headache-harvest/
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/e03668e8-8f51-4b34-8aa8-38a61d013153) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Da es sich um eine Single-Page-App handelt, kopiert der Build `index.html` zusätzlich
+nach `404.html`, damit Deep-Links und Reloads korrekt funktionieren. Die `base` ist
+in [`vite.config.ts`](vite.config.ts) auf `/headache-harvest/` gesetzt.
