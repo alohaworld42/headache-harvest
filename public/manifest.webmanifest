@@ -1,0 +1,23 @@
+{
+  "name": "Kopfweh – Kopfschmerz-Kalender",
+  "short_name": "Kopfweh",
+  "description": "Kopfschmerzen und Migräne in Sekunden erfassen, Muster erkennen und einen Arztbericht mitnehmen. Alle Daten bleiben lokal auf dem Gerät.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f7f9fb",
+  "theme_color": "#14776c",
+  "categories": ["health", "medical", "lifestyle"],
+  "lang": "de",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "shortcuts": [
+    { "name": "Neuer Eintrag", "short_name": "Eintrag", "url": "/calendar" },
+    { "name": "Analyse", "short_name": "Analyse", "url": "/insights" }
+  ]
+}
