@@ -6,7 +6,9 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { AppShell } from '@/components/layout/AppShell';
 import { Onboarding } from '@/components/Onboarding';
 import { EntryDialog } from '@/components/entry/EntryDialog';
+import { QuickEntrySheet } from '@/components/entry/QuickEntrySheet';
 import { ProDialog } from '@/components/pro/ProDialog';
+import { useIsMobile } from '@/hooks/use-media-query';
 import CalendarPage from '@/pages/CalendarPage';
 import Dashboard from '@/pages/Dashboard';
 import InsightsPage from '@/pages/InsightsPage';
@@ -52,17 +54,25 @@ function useReminder() {
 function AppInner() {
   const { settings, updateSettings } = useApp();
   const [entryOpen, setEntryOpen] = useState(false);
+  const [quickOpen, setQuickOpen] = useState(false);
   const [editing, setEditing] = useState<Attack | undefined>();
   const [entryDate, setEntryDate] = useState<string | undefined>();
   const [proOpen, setProOpen] = useState(false);
+  const isMobile = useIsMobile();
 
   useReminder();
 
-  const openNew = useCallback((date?: string) => {
-    setEditing(undefined);
-    setEntryDate(date ?? format(new Date(), ISO));
-    setEntryOpen(true);
-  }, []);
+  // On phones a new entry runs through the step-by-step flow; the full form is
+  // kept for editing and for wider screens where scrolling is not the bottleneck.
+  const openNew = useCallback(
+    (date?: string) => {
+      setEditing(undefined);
+      setEntryDate(date ?? format(new Date(), ISO));
+      if (isMobile) setQuickOpen(true);
+      else setEntryOpen(true);
+    },
+    [isMobile],
+  );
 
   const openEdit = useCallback((attack: Attack) => {
     setEditing(attack);
@@ -101,6 +111,12 @@ function AppInner() {
         attack={editing}
         defaultDate={entryDate}
         onUpgrade={openPro}
+      />
+      <QuickEntrySheet
+        open={quickOpen}
+        onOpenChange={setQuickOpen}
+        defaultDate={entryDate}
+        onOpenFullEditor={openEdit}
       />
       <ProDialog open={proOpen} onOpenChange={setProOpen} />
       <Onboarding open={!settings.onboardingDone} onDone={() => updateSettings({ onboardingDone: true })} />

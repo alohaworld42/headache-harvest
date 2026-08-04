@@ -102,7 +102,8 @@ export function AppShell({ children, onNewEntry }: AppShellProps) {
 
           <div className="ml-auto flex items-center gap-1">
             <ThemeToggle />
-            <Button size="sm" className="gap-1.5" onClick={onNewEntry}>
+            {/* The label collapses to an icon on phones, so it needs an explicit name. */}
+            <Button size="sm" className="gap-1.5" onClick={onNewEntry} aria-label={t('action.addLong')}>
               <Plus className="h-4 w-4" />
               <span className="hidden sm:inline">{t('action.add')}</span>
             </Button>
