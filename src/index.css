@@ -1,69 +1,68 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 210 25% 98%;
+    --foreground: 215 30% 12%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 215 30% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 215 30% 12%;
 
-    --primary: 201 96% 32%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 176 62% 33%;
+    --primary-foreground: 165 60% 97%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 210 22% 94%;
+    --secondary-foreground: 215 30% 18%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 210 22% 95%;
+    --muted-foreground: 215 14% 45%;
 
-    --accent: 199 89% 48%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 176 45% 92%;
+    --accent-foreground: 176 62% 24%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 48%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 214 20% 89%;
+    --input: 214 20% 89%;
+    --ring: 176 62% 33%;
 
-    --radius: 0.85rem;
+    --radius: 0.9rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 216 32% 8%;
+    --foreground: 210 25% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 216 30% 11%;
+    --card-foreground: 210 25% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 216 30% 11%;
+    --popover-foreground: 210 25% 95%;
 
-    --primary: 201 96% 32%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 172 62% 45%;
+    --primary-foreground: 216 40% 8%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 216 25% 16%;
+    --secondary-foreground: 210 25% 95%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 216 25% 16%;
+    --muted-foreground: 214 14% 62%;
 
-    --accent: 199 89% 48%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 176 40% 18%;
+    --accent-foreground: 172 62% 72%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62% 52%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --border: 216 22% 20%;
+    --input: 216 22% 20%;
+    --ring: 172 62% 45%;
   }
 }
 
@@ -72,88 +71,89 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Numbers in the stat tiles should never jump while values change. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-.glass-morphism {
-  @apply bg-white/30 dark:bg-black/20 backdrop-blur-md border border-white/20 dark:border-black/10 shadow-glass;
-}
-
-.headache-btn {
-  @apply relative overflow-hidden px-6 py-3 rounded-full flex items-center justify-center transition-all duration-300 ease-out;
-}
-
-.headache-btn::before {
-  content: '';
-  @apply absolute inset-0 bg-opacity-30 dark:bg-opacity-20 rounded-full transform scale-0 transition-transform duration-300 ease-out;
-}
-
-.headache-btn:hover::before {
-  @apply transform scale-100;
-}
-
-.drop-area {
-  @apply relative border-2 border-dashed rounded-lg p-6 transition-all duration-300;
-}
-
-.drop-area.active {
-  @apply border-headache bg-headache/5;
-}
-
-.scale-in-center {
-  animation: scale-in-center 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
-}
-
-@keyframes scale-in-center {
-  0% {
-    transform: scale(0);
-    opacity: 0;
+@layer components {
+  .surface {
+    @apply rounded-2xl border bg-card text-card-foreground shadow-sm;
   }
-  100% {
-    transform: scale(1);
-    opacity: 1;
+
+  .chip {
+    @apply inline-flex select-none items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm
+      transition-colors duration-150;
+  }
+
+  .chip-idle {
+    @apply border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground;
+  }
+
+  .chip-active {
+    @apply border-primary/40 bg-primary/10 text-primary;
+  }
+
+  .section-title {
+    @apply text-sm font-medium uppercase tracking-wide text-muted-foreground;
   }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary/30 rounded-full;
+  @apply rounded-full bg-muted-foreground/25;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary/50;
+  @apply bg-muted-foreground/40;
 }
 
-/* Smooth slide transitions */
-.slide-enter {
-  opacity: 0;
-  transform: translateY(20px);
-}
+/* The doctor report is designed for A4 output. */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm;
+  }
 
-.slide-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
-}
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
 
-.slide-exit {
-  opacity: 1;
-}
+  .print-hidden {
+    display: none !important;
+  }
 
-.slide-exit-active {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 300ms, transform 300ms;
+  .print-page {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .print-break {
+    break-inside: avoid;
+  }
+
+  table {
+    font-size: 10px;
+  }
 }
