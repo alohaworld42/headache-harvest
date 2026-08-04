@@ -50,6 +50,18 @@ npm run build
 npm run preview
 ```
 
+## Live-Vorschau (GitHub Pages)
+
+Zum Testen wird bei jedem Push zusätzlich eine kostenlose Vorschau auf GitHub Pages
+veröffentlicht: <https://alohaworld42.github.io/headache-harvest/>
+
+Dort läuft die identische App. Nur die Endpunkte unter `/api` existieren dort nicht,
+d. h. der Stripe-Kauf ist deaktiviert – der 14-tägige Pro-Test schaltet aber alle
+Pro-Funktionen frei, sodass sich alles ausprobieren lässt.
+
+Der Basispfad kommt aus der Umgebungsvariable `APP_BASE` (Standard `/`, Pages-Workflow
+setzt `/headache-harvest/`), Router, Manifest und Service Worker richten sich danach.
+
 ## Deployment auf Vercel
 
 Das Repository ist als Vercel-Projekt direkt deploybar (`vercel.json` liegt bei):

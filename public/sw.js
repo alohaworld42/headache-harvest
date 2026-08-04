@@ -1,6 +1,8 @@
 /* Minimal offline shell for the headache diary. No third party libraries involved. */
 const CACHE = 'kopfweh-v2';
-const SHELL = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'];
+/* Works both at the domain root (Vercel) and under a sub-path (GitHub Pages). */
+const BASE = new URL('./', self.registration.scope).pathname;
+const SHELL = [BASE, `${BASE}manifest.webmanifest`, `${BASE}icon-192.png`, `${BASE}icon-512.png`];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -36,10 +38,10 @@ self.addEventListener('fetch', (event) => {
       fetch(request)
         .then((response) => {
           const copy = response.clone();
-          void caches.open(CACHE).then((cache) => cache.put('/', copy));
+          void caches.open(CACHE).then((cache) => cache.put(BASE, copy));
           return response;
         })
-        .catch(() => caches.match('/').then((cached) => cached ?? Response.error())),
+        .catch(() => caches.match(BASE).then((cached) => cached ?? Response.error())),
     );
     return;
   }
@@ -50,7 +52,7 @@ self.addEventListener('fetch', (event) => {
       (cached) =>
         cached ??
         fetch(request).then((response) => {
-          if (response.ok && (url.pathname.startsWith('/assets/') || SHELL.includes(url.pathname))) {
+          if (response.ok && (url.pathname.startsWith(`${BASE}assets/`) || SHELL.includes(url.pathname))) {
             const copy = response.clone();
             void caches.open(CACHE).then((cache) => cache.put(request, copy));
           }

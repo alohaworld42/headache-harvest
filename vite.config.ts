@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 
 export default defineConfig({
-  // Served from the domain root on Vercel.
-  base: '/',
+  // Root path on Vercel; the GitHub Pages workflow overrides it with the repo sub-path.
+  base: process.env.APP_BASE ?? '/',
   server: {
     host: '::',
     port: 8080,

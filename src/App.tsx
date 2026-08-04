@@ -112,7 +112,7 @@ export default function App() {
   return (
     <AppStoreProvider>
       <TooltipProvider delayDuration={200}>
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL}>
           <AppInner />
         </BrowserRouter>
         <Sonner position="top-center" />
