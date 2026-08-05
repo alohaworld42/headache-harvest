@@ -7,6 +7,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { toast } from 'sonner';
 import { de as deLocale, enUS } from 'date-fns/locale';
 import type { Locale } from 'date-fns';
 import { LOCATIONS, RELIEF, SYMPTOMS, TRIGGERS, resolveLabel } from '@/lib/catalog';
@@ -69,7 +70,11 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
   const persist = useCallback((updater: (current: AppData) => AppData) => {
     setData((current) => {
       const next = updater(current);
-      saveData(next);
+      if (!saveData(next)) {
+        // A silent failure here would look like a saved entry that is gone after
+        // the next reload, so the user has to hear about it right away.
+        toast.error(translate(next.settings.language, 'toast.saveFailed'), { duration: 10_000 });
+      }
       return next;
     });
   }, []);
