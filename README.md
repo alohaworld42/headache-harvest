@@ -42,7 +42,8 @@ Single-Page-App plus zwei Edge-Funktionen für den Bezahlvorgang.
 Neue Nutzer:innen können Pro **14 Tage kostenlos testen** (rein lokal, ohne Konto).
 Der **Arztbericht ist vom Test ausgenommen** – er schaltet erst mit dem Kauf frei, weil
 er der Grund ist, warum jemand die App kauft. Wer ihn nicht braucht, nutzt die App
-dauerhaft kostenlos und findet in den Einstellungen einen **Ko-fi-Spendenbutton**.
+dauerhaft kostenlos; ein zurückhaltender **Ko-fi-Spendenlink** liegt in der Kopfzeile,
+als kleines Banner auf der Übersicht und in den Einstellungen.
 
 ## Tech Stack
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
-import { Activity, BarChart3, CalendarDays, FileText, Moon, Plus, Settings, Sun } from 'lucide-react';
+import { Activity, BarChart3, CalendarDays, Coffee, FileText, Moon, Plus, Settings, Sun } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { KOFI_URL } from '@/lib/pro';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/store/app-store';
 import type { TranslationKey } from '@/lib/i18n';
@@ -101,6 +102,17 @@ export function AppShell({ children, onNewEntry }: AppShellProps) {
           </nav>
 
           <div className="ml-auto flex items-center gap-1">
+            {/* Deliberately quiet: the app is usable for free, so the ask stays a footnote. */}
+            <Button
+              asChild
+              variant="ghost"
+              size="icon"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <a href={KOFI_URL} target="_blank" rel="noopener noreferrer" aria-label={t('pro.donate')} title={t('pro.donate')}>
+                <Coffee className="h-[1.05rem] w-[1.05rem]" />
+              </a>
+            </Button>
             <ThemeToggle />
             {/* The label collapses to an icon on phones, so it needs an explicit name. */}
             <Button size="sm" className="gap-1.5" onClick={onNewEntry} aria-label={t('action.addLong')}>

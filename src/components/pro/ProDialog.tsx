@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Check, Coffee, Loader2, Sparkles } from 'lucide-react';
+import { Check, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { KOFI_URL, PRO_FEATURES, fetchPricing, startCheckout, verifyToken, type PricingResponse } from '@/lib/pro';
+import { PRO_FEATURES, fetchPricing, startCheckout, verifyToken, type PricingResponse } from '@/lib/pro';
 import { useApp } from '@/store/app-store';
 
 interface ProDialogProps {
@@ -142,18 +142,6 @@ export function ProDialog({ open, onOpenChange }: ProDialogProps) {
             )}
           </div>
         )}
-
-        <div className="border-t pt-3">
-          <div className="mb-3 flex flex-wrap items-center gap-2">
-            <p className="text-xs text-muted-foreground">{t('pro.donateHint')}</p>
-            <Button asChild variant="outline" size="sm" className="ml-auto gap-1.5">
-              <a href={KOFI_URL} target="_blank" rel="noopener noreferrer">
-                <Coffee className="h-4 w-4" />
-                {t('pro.donateShort')}
-              </a>
-            </Button>
-          </div>
-        </div>
 
         <div className="border-t pt-3">
           {showRestore ? (

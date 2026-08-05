@@ -211,6 +211,7 @@ const de = {
   'pro.donateHint':
     'Du brauchst den Arztbericht nicht, magst die App aber? Ein Kaffee hilft bei der Weiterentwicklung.',
   'pro.donateShort': 'Kaffee spendieren',
+  'pro.donateBanner': 'Kopfweh ist kostenlos nutzbar – ein Kaffee hilft bei der Weiterentwicklung.',
 
   'backup.encrypted': 'Verschlüsseltes Backup',
   'backup.encryptedHint':
@@ -517,6 +518,7 @@ const en: Record<TranslationKey, string> = {
   'pro.donateHint':
     'Do not need the doctor report but like the app? A coffee keeps it moving.',
   'pro.donateShort': 'Buy a coffee',
+  'pro.donateBanner': 'Kopfweh is free to use – a coffee helps keep it going.',
 
   'backup.encrypted': 'Encrypted backup',
   'backup.encryptedHint':
