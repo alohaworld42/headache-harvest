@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { LOCATIONS, RELIEF, SYMPTOMS, TRIGGERS, resolveLabel, type Lang } from './catalog';
+import { LOCATIONS, PAIN_QUALITIES, RELIEF, SYMPTOMS, TRIGGERS, resolveLabel, type Lang } from './catalog';
 import type { Attack } from './types';
 
 export function downloadFile(content: string, filename: string, mime: string): void {
@@ -31,6 +31,7 @@ const HEADERS: Record<Lang, string[]> = {
     'Art',
     'Aura',
     'Lokalisation',
+    'Schmerzcharakter',
     'Symptome',
     'Auslöser',
     'Medikamente',
@@ -51,6 +52,7 @@ const HEADERS: Record<Lang, string[]> = {
     'Type',
     'Aura',
     'Location',
+    'Pain character',
     'Symptoms',
     'Triggers',
     'Medication',
@@ -80,6 +82,7 @@ export function attacksToCsv(attacks: Attack[], lang: Lang): string {
       attack.type,
       attack.aura ? yes : no,
       attack.locations.map((id) => resolveLabel(LOCATIONS, id, lang)).join(', '),
+      attack.qualities.map((id) => resolveLabel(PAIN_QUALITIES, id, lang)).join(', '),
       attack.symptoms.map((id) => resolveLabel(SYMPTOMS, id, lang)).join(', '),
       attack.triggers.map((id) => resolveLabel(TRIGGERS, id, lang)).join(', '),
       attack.medications

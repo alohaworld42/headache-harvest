@@ -12,9 +12,11 @@ Single-Page-App plus zwei Edge-Funktionen für den Bezahlvorgang.
 
 ### Kostenlos
 - **Kalender** – Monatsansicht, farbcodiert nach Schmerzintensität, Mehrfacheinträge pro Tag
-- **Eintrags-Editor** – Datum, Beginn, Dauer, Intensität (1–10), Kopfschmerzart, Aura,
-  Lokalisation, Begleitsymptome, Auslöser, Medikamente inkl. Dosis/Uhrzeit/Wirkung,
-  Beeinträchtigung, Schlaf, Stress, Zyklus, Wetterwechsel, Notizen
+- **Schnell-Erfassung am Handy** – Schritt-für-Schritt-Flow, ein Minimal-Eintrag sind zwei
+  Taps; Auswahllisten sortieren sich nach der eigenen Häufigkeit
+- **Eintrags-Editor** – Datum, Beginn, Dauer, Intensität (1–10), Kopfschmerzart,
+  Schmerzcharakter, Aura, Lokalisation, Begleitsymptome, Auslöser, Medikamente inkl.
+  Dosis/Uhrzeit/Wirkung, Beeinträchtigung, Schlaf, Stress, Zyklus, Wetterwechsel, Notizen
 - **Übersicht** – Kopfschmerztage, Attacken, Ø Intensität, Ø Dauer, Tage mit
   Akutmedikation, kopfschmerzfreie Serie, Verlaufskurve
 - **Analyse (90 Tage)** – automatisch erkannte Muster, Auslöser-Profil, Wochentag- und
@@ -26,7 +28,8 @@ Single-Page-App plus zwei Edge-Funktionen für den Bezahlvorgang.
 
 ### Pro
 - Analyse über den **gesamten Zeitraum** statt nur 90 Tage
-- **Arztbericht** zum Drucken bzw. als PDF (A4-optimiert)
+- **Arztbericht** zum Drucken bzw. als PDF (A4-optimiert), inklusive Krankengeschichte
+  und den Spalten des DMKG-Kopfschmerzkalenders
 - **CSV-Export** für Excel und Praxissoftware
 - **Jahres-Heatmap**
 - **Medikamenten-Wirksamkeit** und monatsgenauer Medikamenten-Report
@@ -52,8 +55,8 @@ npm run preview
 
 ## Live-Vorschau (GitHub Pages)
 
-Zum Testen wird bei jedem Push zusätzlich eine kostenlose Vorschau auf GitHub Pages
-veröffentlicht: <https://alohaworld42.github.io/headache-harvest/>
+Zum Testen wird bei jedem Push auf `main` zusätzlich eine kostenlose Vorschau auf GitHub
+Pages veröffentlicht: <https://alohaworld42.github.io/headache-harvest/>
 
 Dort läuft die identische App. Nur die Endpunkte unter `/api` existieren dort nicht,
 d. h. der Stripe-Kauf ist deaktiviert – der 14-tägige Pro-Test schaltet aber alle
@@ -104,6 +107,12 @@ Für Impressum und Datenschutz zusätzlich (Build-Time, daher `VITE_`-Präfix):
 
 Es wird bewusst **keine Kundendatenbank** betrieben: Stripe ist die einzige Quelle der
 Wahrheit für „hat bezahlt", der Lizenzschlüssel ist ein signiertes Token.
+
+## Wettbewerb
+
+Eine Analyse des Marktumfelds, der Stiftung-Warentest-Kritikpunkte, des
+DMKG-Kalenderstandards und der daraus abgeleiteten Positionierung liegt in
+[`docs/wettbewerb.md`](docs/wettbewerb.md).
 
 ## Rechtliches
 

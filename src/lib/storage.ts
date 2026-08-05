@@ -69,6 +69,7 @@ export function migrateLegacyEntries(entries: LegacyEntry[]): Attack[] {
       type: 'other' as const,
       aura: false,
       locations: entry.location ?? [],
+      qualities: [],
       symptoms: entry.symptoms ?? [],
       triggers: entry.triggers ?? [],
       medications: (entry.medications ?? []).map((name) => ({
@@ -107,6 +108,7 @@ export function normalizeAttack(raw: Attack): Attack {
     type: raw.type ?? 'other',
     aura: Boolean(raw.aura),
     locations: raw.locations ?? [],
+    qualities: raw.qualities ?? [],
     symptoms: raw.symptoms ?? [],
     triggers: raw.triggers ?? [],
     relief: raw.relief ?? [],

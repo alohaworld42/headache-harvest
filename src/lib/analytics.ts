@@ -1,22 +1,16 @@
 import type { Locale } from 'date-fns';
 import {
-  addDays,
   differenceInCalendarDays,
   eachMonthOfInterval,
   format,
   getDay,
   parseISO,
-  startOfMonth,
-  subDays,
 } from 'date-fns';
 import { MOH_HIGH_THRESHOLD_CLASSES, MOH_LOW_THRESHOLD_CLASSES } from './catalog';
 import type { Attack, MedicationClass } from './types';
 
 export const ISO = 'yyyy-MM-dd';
 
-export function today(): string {
-  return format(new Date(), ISO);
-}
 
 export function inRange(attack: Attack, from: string, to: string): boolean {
   return attack.date >= from && attack.date <= to;
@@ -26,10 +20,6 @@ export function filterRange(attacks: Attack[], from: string, to: string): Attack
   return attacks.filter((attack) => inRange(attack, from, to));
 }
 
-export function rangeFromDays(days: number): { from: string; to: string } {
-  const to = new Date();
-  return { from: format(subDays(to, days - 1), ISO), to: format(to, ISO) };
-}
 
 export interface Summary {
   attackCount: number;
@@ -576,14 +566,4 @@ export function formatDuration(minutes: number | undefined, lang: 'de' | 'en'): 
   return lang === 'de' ? `${hours} Std. ${rest} min` : `${hours} h ${rest} min`;
 }
 
-export function lastNDaysRange(days: number): { from: string; to: string } {
-  const to = new Date();
-  const from = addDays(to, -(days - 1));
-  return { from: format(from, ISO), to: format(to, ISO) };
-}
 
-export function monthRange(date: Date): { from: string; to: string } {
-  const start = startOfMonth(date);
-  const end = new Date(start.getFullYear(), start.getMonth() + 1, 0);
-  return { from: format(start, ISO), to: format(end, ISO) };
-}
