@@ -359,9 +359,9 @@ const texts = {
     mohTitle: 'Verdacht auf Medikamenten-Übergebrauch',
     mohBody: (months: number) =>
       `In ${months} ${months === 1 ? 'Monat' : 'Monaten'} lag die Zahl der Tage mit Akutmedikation über der empfohlenen Grenze (10 Tage für Triptane/Kombipräparate, 15 Tage für einfache Schmerzmittel). Besprich das bitte mit deiner Ärztin oder deinem Arzt.`,
-    frequentTitle: 'Häufige Kopfschmerztage',
+    frequentTitle: 'Häufige Schmerztage',
     frequentBody: (days: number) =>
-      `Du hattest im Schnitt ${days.toFixed(1)} Kopfschmerztage pro Monat. Ab 15 Tagen im Monat spricht man von chronischem Kopfschmerz – ein guter Anlass für ein ärztliches Gespräch.`,
+      `Du hattest im Schnitt ${days.toFixed(1)} Schmerztage pro Monat. Ab 15 Kopfschmerztagen im Monat spricht man von chronischem Kopfschmerz – ein guter Anlass für ein ärztliches Gespräch.`,
     triggerTitle: 'Auffälliger Auslöser',
     triggerBody: (name: string, share: number) =>
       `„${name}" war bei ${Math.round(share * 100)} % deiner Attacken notiert – der häufigste Eintrag in deinem Zeitraum.`,
@@ -376,15 +376,15 @@ const texts = {
       `„${name}" hat nur bei ${Math.round(rate * 100)} % der bewerteten Einnahmen geholfen. Eine Alternative könnte sinnvoll sein.`,
     trendDownTitle: 'Positive Entwicklung',
     trendDownBody: (before: number, after: number) =>
-      `Deine Kopfschmerztage sind von ${before} auf ${after} pro Monat gesunken.`,
+      `Deine Schmerztage sind von ${before} auf ${after} pro Monat gesunken.`,
     trendUpTitle: 'Zunehmende Häufigkeit',
     trendUpBody: (before: number, after: number) =>
-      `Deine Kopfschmerztage sind von ${before} auf ${after} pro Monat gestiegen.`,
+      `Deine Schmerztage sind von ${before} auf ${after} pro Monat gestiegen.`,
     weekdayTitle: 'Wochentag-Muster',
     weekdayBody: (day: string, share: number) =>
       `${share > 0 ? `${Math.round(share * 100)} % ` : ''}deiner Attacken beginnen am ${day}.`,
-    streakTitle: 'Kopfschmerzfreie Serie',
-    streakBody: (days: number) => `Du bist seit ${days} Tagen kopfschmerzfrei.`,
+    streakTitle: 'Schmerzfreie Serie',
+    streakBody: (days: number) => `Du bist seit ${days} Tagen schmerzfrei.`,
     emptyTitle: 'Noch zu wenig Daten',
     emptyBody:
       'Trage ein paar Attacken ein – ab etwa fünf Einträgen erkennt die Auswertung erste Muster.',
@@ -393,9 +393,9 @@ const texts = {
     mohTitle: 'Possible medication overuse',
     mohBody: (months: number) =>
       `In ${months} month${months === 1 ? '' : 's'} your acute medication days exceeded the recommended limit (10 days for triptans/combination drugs, 15 days for simple analgesics). Please discuss this with your doctor.`,
-    frequentTitle: 'Frequent headache days',
+    frequentTitle: 'Frequent pain days',
     frequentBody: (days: number) =>
-      `You averaged ${days.toFixed(1)} headache days per month. From 15 days a month headache is considered chronic – worth discussing with a doctor.`,
+      `You averaged ${days.toFixed(1)} pain days per month. From 15 headache days a month headache is considered chronic – worth discussing with a doctor.`,
     triggerTitle: 'Notable trigger',
     triggerBody: (name: string, share: number) =>
       `"${name}" was recorded for ${Math.round(share * 100)}% of your attacks – the most frequent entry in this period.`,
@@ -409,15 +409,15 @@ const texts = {
       `"${name}" only helped in ${Math.round(rate * 100)}% of rated intakes. An alternative might be worth discussing.`,
     trendDownTitle: 'Positive trend',
     trendDownBody: (before: number, after: number) =>
-      `Your headache days went down from ${before} to ${after} per month.`,
+      `Your pain days went down from ${before} to ${after} per month.`,
     trendUpTitle: 'Increasing frequency',
     trendUpBody: (before: number, after: number) =>
-      `Your headache days went up from ${before} to ${after} per month.`,
+      `Your pain days went up from ${before} to ${after} per month.`,
     weekdayTitle: 'Weekday pattern',
     weekdayBody: (day: string, share: number) =>
       `${share > 0 ? `${Math.round(share * 100)}% ` : ''}of your attacks start on ${day}.`,
-    streakTitle: 'Headache-free streak',
-    streakBody: (days: number) => `You have been headache-free for ${days} days.`,
+    streakTitle: 'Pain-free streak',
+    streakBody: (days: number) => `You have been pain-free for ${days} days.`,
     emptyTitle: 'Not enough data yet',
     emptyBody: 'Log a few attacks – from about five entries the analysis starts to find patterns.',
   },

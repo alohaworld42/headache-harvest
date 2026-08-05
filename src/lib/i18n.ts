@@ -2,7 +2,7 @@ export type Lang = 'de' | 'en';
 
 const de = {
   'app.name': 'Kopfweh',
-  'app.tagline': 'Der Kopfschmerz-Kalender, der Muster findet.',
+  'app.tagline': 'Das Schmerztagebuch, das Muster findet.',
   'nav.dashboard': 'Übersicht',
   'nav.calendar': 'Kalender',
   'nav.insights': 'Analyse',
@@ -14,7 +14,7 @@ const de = {
   'insights.trigger': 'Auslöser',
 
   'action.add': 'Eintrag',
-  'action.addLong': 'Kopfschmerz eintragen',
+  'action.addLong': 'Schmerz eintragen',
   'action.save': 'Speichern',
   'action.cancel': 'Abbrechen',
   'action.delete': 'Löschen',
@@ -39,20 +39,20 @@ const de = {
   'range.label': 'Zeitraum',
 
   'dash.title': 'Übersicht',
-  'dash.subtitle': 'Deine Kopfschmerz-Entwicklung auf einen Blick.',
-  'dash.headacheDays': 'Kopfschmerztage',
+  'dash.subtitle': 'Deine Schmerz-Entwicklung auf einen Blick.',
+  'dash.headacheDays': 'Schmerztage',
   'dash.attacks': 'Attacken',
   'dash.avgIntensity': 'Ø Intensität',
   'dash.medDays': 'Tage mit Akutmedikation',
   'dash.avgDuration': 'Ø Dauer',
-  'dash.freeStreak': 'Kopfschmerzfrei seit',
+  'dash.freeStreak': 'Schmerzfrei seit',
   'dash.severeDays': 'Tage mit Ausfall',
   'dash.days': 'Tage',
   'dash.trend': 'Verlauf',
-  'dash.trendDays': 'Kopfschmerztage pro Monat',
+  'dash.trendDays': 'Schmerztage pro Monat',
   'dash.recent': 'Letzte Einträge',
   'dash.noEntries': 'Noch keine Einträge',
-  'dash.noEntriesHint': 'Trage deinen ersten Kopfschmerz ein – es dauert keine Minute.',
+  'dash.noEntriesHint': 'Trage deinen ersten Schmerz ein – es dauert keine Minute.',
   'dash.ofDays': 'von {0} Tagen',
 
   'cal.title': 'Kalender',
@@ -74,7 +74,7 @@ const de = {
   'entry.durationMinutes': 'Minuten',
   'entry.intensity': 'Schmerzstärke',
   'entry.intensityHint': '1 = kaum spürbar, 10 = unerträglich',
-  'entry.type': 'Art des Kopfschmerzes',
+  'entry.type': 'Art der Schmerzen',
   'entry.aura': 'Mit Aura',
   'entry.location': 'Lokalisation',
   'entry.symptoms': 'Begleitsymptome',
@@ -157,7 +157,7 @@ const de = {
   'report.period': 'Zeitraum',
   'report.created': 'Erstellt am',
   'report.summary': 'Zusammenfassung',
-  'report.diary': 'Kopfschmerz-Tagebuch',
+  'report.diary': 'Schmerz-Tagebuch',
   'report.noName': 'Nicht angegeben',
   'report.disclaimerTitle': 'Hinweis',
   'report.disclaimer':
@@ -244,7 +244,7 @@ const de = {
 
   'onboard.title': 'Willkommen',
   'onboard.body':
-    'Erfasse deine Kopfschmerzen in Sekunden und erkenne über die Zeit, was sie auslöst. Alle Daten bleiben lokal auf deinem Gerät.',
+    'Erfasse deine Schmerzen in Sekunden und erkenne über die Zeit, was sie auslöst. Alle Daten bleiben lokal auf deinem Gerät.',
   'onboard.step1': 'Attacken schnell eintragen',
   'onboard.step2': 'Muster und Auslöser erkennen',
   'onboard.step3': 'Arztbericht mitnehmen',
@@ -263,6 +263,8 @@ const de = {
   'toast.cleared': 'Alle Einträge gelöscht',
   'toast.noData': 'Keine Einträge vorhanden',
   'toast.settingsSaved': 'Gespeichert',
+  'toast.saveFailed':
+    'Der Eintrag konnte nicht gespeichert werden – der Speicher deines Browsers ist voll oder gesperrt. Sichere deine Daten über Einstellungen → Backup.',
 
   'common.of': 'von',
   'common.none': 'Keine',
@@ -280,7 +282,7 @@ export type TranslationKey = keyof typeof de;
 
 const en: Record<TranslationKey, string> = {
   'app.name': 'Kopfweh',
-  'app.tagline': 'The headache diary that finds the pattern.',
+  'app.tagline': 'The pain diary that finds the pattern.',
   'nav.dashboard': 'Overview',
   'nav.calendar': 'Calendar',
   'nav.insights': 'Insights',
@@ -292,7 +294,7 @@ const en: Record<TranslationKey, string> = {
   'insights.trigger': 'Trigger',
 
   'action.add': 'Entry',
-  'action.addLong': 'Log a headache',
+  'action.addLong': 'Log pain',
   'action.save': 'Save',
   'action.cancel': 'Cancel',
   'action.delete': 'Delete',
@@ -317,20 +319,20 @@ const en: Record<TranslationKey, string> = {
   'range.label': 'Period',
 
   'dash.title': 'Overview',
-  'dash.subtitle': 'Your headache development at a glance.',
-  'dash.headacheDays': 'Headache days',
+  'dash.subtitle': 'Your pain development at a glance.',
+  'dash.headacheDays': 'Pain days',
   'dash.attacks': 'Attacks',
   'dash.avgIntensity': 'Avg. intensity',
   'dash.medDays': 'Acute medication days',
   'dash.avgDuration': 'Avg. duration',
-  'dash.freeStreak': 'Headache-free for',
+  'dash.freeStreak': 'Pain-free for',
   'dash.severeDays': 'Days out of action',
   'dash.days': 'days',
   'dash.trend': 'Trend',
-  'dash.trendDays': 'Headache days per month',
+  'dash.trendDays': 'Pain days per month',
   'dash.recent': 'Recent entries',
   'dash.noEntries': 'No entries yet',
-  'dash.noEntriesHint': 'Log your first headache – it takes less than a minute.',
+  'dash.noEntriesHint': 'Log your first pain entry – it takes less than a minute.',
   'dash.ofDays': 'of {0} days',
 
   'cal.title': 'Calendar',
@@ -352,7 +354,7 @@ const en: Record<TranslationKey, string> = {
   'entry.durationMinutes': 'minutes',
   'entry.intensity': 'Pain level',
   'entry.intensityHint': '1 = barely noticeable, 10 = unbearable',
-  'entry.type': 'Headache type',
+  'entry.type': 'Type of pain',
   'entry.aura': 'With aura',
   'entry.location': 'Location',
   'entry.symptoms': 'Accompanying symptoms',
@@ -435,7 +437,7 @@ const en: Record<TranslationKey, string> = {
   'report.period': 'Period',
   'report.created': 'Created on',
   'report.summary': 'Summary',
-  'report.diary': 'Headache diary',
+  'report.diary': 'Pain diary',
   'report.noName': 'Not provided',
   'report.disclaimerTitle': 'Note',
   'report.disclaimer': 'This report is self-documentation and does not replace a medical diagnosis.',
@@ -520,7 +522,7 @@ const en: Record<TranslationKey, string> = {
 
   'onboard.title': 'Welcome',
   'onboard.body':
-    'Log your headaches in seconds and learn over time what sets them off. All data stays on your device.',
+    'Log your pain in seconds and learn over time what sets it off. All data stays on your device.',
   'onboard.step1': 'Log attacks in seconds',
   'onboard.step2': 'Spot patterns and triggers',
   'onboard.step3': 'Take a report to your doctor',
@@ -539,6 +541,8 @@ const en: Record<TranslationKey, string> = {
   'toast.cleared': 'All entries deleted',
   'toast.noData': 'No entries available',
   'toast.settingsSaved': 'Saved',
+  'toast.saveFailed':
+    'The entry could not be saved – your browser storage is full or blocked. Please back up your data via Settings → Backup.',
 
   'common.of': 'of',
   'common.none': 'None',

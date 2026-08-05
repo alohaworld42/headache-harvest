@@ -25,7 +25,7 @@ const CONTENT: Record<LegalKind, Record<'de' | 'en', { title: string; blocks: Bl
         {
           heading: 'Kurzfassung',
           paragraphs: [
-            'Deine Kopfschmerz-Einträge werden ausschließlich lokal im Speicher deines Browsers (localStorage) abgelegt. Sie werden nicht an einen Server übertragen, nicht ausgewertet und nicht weitergegeben. Es gibt kein Nutzerkonto.',
+            'Deine Schmerz-Einträge werden ausschließlich lokal im Speicher deines Browsers (localStorage) abgelegt. Sie werden nicht an einen Server übertragen, nicht ausgewertet und nicht weitergegeben. Es gibt kein Nutzerkonto.',
           ],
         },
         {
@@ -35,7 +35,7 @@ const CONTENT: Record<LegalKind, Record<'de' | 'en', { title: string; blocks: Bl
         {
           heading: 'Gesundheitsdaten',
           paragraphs: [
-            'Angaben zu Kopfschmerzen, Medikamenten und Symptomen sind Gesundheitsdaten im Sinne von Art. 9 DSGVO. Da sie das Endgerät nicht verlassen, findet keine Verarbeitung durch uns statt. Beim Löschen der Browserdaten oder beim Wechsel des Geräts gehen die Einträge verloren – nutze dafür die Backup-Funktion.',
+            'Angaben zu Schmerzen, Medikamenten und Symptomen sind Gesundheitsdaten im Sinne von Art. 9 DSGVO. Da sie das Endgerät nicht verlassen, findet keine Verarbeitung durch uns statt. Beim Löschen der Browserdaten oder beim Wechsel des Geräts gehen die Einträge verloren – nutze dafür die Backup-Funktion.',
           ],
         },
         {
@@ -70,7 +70,7 @@ const CONTENT: Record<LegalKind, Record<'de' | 'en', { title: string; blocks: Bl
         {
           heading: 'In short',
           paragraphs: [
-            'Your headache entries are stored exclusively in your browser’s local storage. They are never uploaded, analysed or shared. There is no user account.',
+            'Your pain entries are stored exclusively in your browser’s local storage. They are never uploaded, analysed or shared. There is no user account.',
           ],
         },
         {
@@ -80,7 +80,7 @@ const CONTENT: Record<LegalKind, Record<'de' | 'en', { title: string; blocks: Bl
         {
           heading: 'Health data',
           paragraphs: [
-            'Information about headaches, medication and symptoms is health data under Art. 9 GDPR. Because it never leaves your device, we do not process it. Clearing browser data or switching devices will remove your entries – use the backup function for that.',
+            'Information about pain, medication and symptoms is health data under Art. 9 GDPR. Because it never leaves your device, we do not process it. Clearing browser data or switching devices will remove your entries – use the backup function for that.',
           ],
         },
         {
@@ -117,7 +117,7 @@ const CONTENT: Record<LegalKind, Record<'de' | 'en', { title: string; blocks: Bl
         {
           heading: '1. Leistungsumfang',
           paragraphs: [
-            'Die App stellt ein digitales Kopfschmerz-Tagebuch bereit. Die Basisfunktionen sind kostenlos. Mit „Pro" werden zusätzliche Auswertungen, der Arztbericht und Exportfunktionen freigeschaltet.',
+            'Die App stellt ein digitales Schmerz-Tagebuch bereit. Die Basisfunktionen sind kostenlos. Mit „Pro" werden zusätzliche Auswertungen, der Arztbericht und Exportfunktionen freigeschaltet.',
           ],
         },
         {
@@ -164,7 +164,7 @@ const CONTENT: Record<LegalKind, Record<'de' | 'en', { title: string; blocks: Bl
         {
           heading: '1. Scope of service',
           paragraphs: [
-            'The app provides a digital headache diary. Core features are free. "Pro" unlocks additional analyses, the doctor report and export functions.',
+            'The app provides a digital pain diary. Core features are free. "Pro" unlocks additional analyses, the doctor report and export functions.',
           ],
         },
         {

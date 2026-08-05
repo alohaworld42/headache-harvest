@@ -40,8 +40,8 @@ function useReminder() {
       new Notification('Kopfweh', {
         body:
           settings.language === 'de'
-            ? 'Wie war dein Tag? Trage deinen Kopfschmerz ein.'
-            : 'How was your day? Log your headache.',
+            ? 'Wie war dein Tag? Trage deinen Schmerz ein.'
+            : 'How was your day? Log your pain.',
       });
     };
 

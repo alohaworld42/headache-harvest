@@ -155,13 +155,19 @@ export function loadData(): AppData {
   return emptyData();
 }
 
-export function saveData(data: AppData): void {
-  if (typeof window === 'undefined') return;
+/**
+ * Returns false when the browser refused the write — a full quota or a locked
+ * private-mode store. The caller must tell the user, otherwise entries would be
+ * lost without any visible sign.
+ */
+export function saveData(data: AppData): boolean {
+  if (typeof window === 'undefined') return false;
   try {
     const payload: AppData = { ...data, version: DATA_VERSION, updatedAt: new Date().toISOString() };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    return true;
   } catch {
-    // Quota errors are surfaced by the caller via the UI, not thrown here.
+    return false;
   }
 }
 
