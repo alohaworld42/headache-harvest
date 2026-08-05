@@ -50,7 +50,7 @@ Erst hier existieren die Endpunkte unter `/api`, die den Kauf abwickeln.
 | `VITE_LEGAL_ADDRESS` | ladungsfähige Anschrift |
 | `VITE_LEGAL_EMAIL` | Kontakt-Adresse |
 | `VITE_LEGAL_VAT_ID` | USt-IdNr., falls vorhanden |
-| `VITE_KOFI_HANDLE` | optional, Standard `sunspotted` |
+| `VITE_KOFI_HANDLE` | optional, Standard `sunspotter` |
 
 `LICENSE_SECRET` **niemals nachträglich ändern** — alle ausgegebenen Schlüssel
 würden ungültig. Nach dem Setzen einmal neu deployen.

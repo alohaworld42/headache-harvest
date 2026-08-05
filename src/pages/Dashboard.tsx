@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format, subDays } from 'date-fns';
-import { AlertTriangle, ArrowRight, CalendarPlus, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CalendarPlus, Coffee, ShieldCheck } from 'lucide-react';
 import {
   Area,
   AreaChart,
@@ -16,7 +16,7 @@ import { AttackList } from '@/components/common/AttackList';
 import { RangeSelect, rangeDays, type RangeValue } from '@/components/common/RangeSelect';
 import { StatTile } from '@/components/common/StatTile';
 import { ISO, formatDurationShort, mohByMonth, monthlySeries, streaks, summarize } from '@/lib/analytics';
-import { FREE_ANALYSIS_DAYS } from '@/lib/pro';
+import { FREE_ANALYSIS_DAYS, KOFI_URL } from '@/lib/pro';
 import { useApp } from '@/store/app-store';
 import type { Attack } from '@/lib/types';
 
@@ -221,6 +221,17 @@ export default function Dashboard({ onNewEntry, onEditEntry, onUpgrade }: Dashbo
         </button>
       )}
 
+      {/* Kept small on purpose – a hint, not a second paywall. */}
+      <a
+        href={KOFI_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2.5 rounded-xl border bg-muted/30 px-3.5 py-2.5 text-xs text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+      >
+        <Coffee className="h-3.5 w-3.5 shrink-0" />
+        <span className="min-w-0">{t('pro.donateBanner')}</span>
+        <span className="ml-auto shrink-0 font-medium text-primary">{t('pro.donateShort')}</span>
+      </a>
     </div>
   );
 }

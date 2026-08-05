@@ -188,5 +188,5 @@ export const PRO_FEATURES = [
 export const FREE_ANALYSIS_DAYS = 90;
 
 /** Donation page. Configurable so a fork can point somewhere else. */
-export const KOFI_HANDLE = import.meta.env.VITE_KOFI_HANDLE ?? 'sunspotted';
+export const KOFI_HANDLE = import.meta.env.VITE_KOFI_HANDLE ?? 'sunspotter';
 export const KOFI_URL = `https://ko-fi.com/${KOFI_HANDLE}`;
