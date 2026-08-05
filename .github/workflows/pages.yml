@@ -3,9 +3,12 @@ name: Deploy preview to GitHub Pages
 # Serves the same app as a free, always-on test link. The Stripe endpoints under
 # /api only exist on Vercel, so checkout is unavailable here — everything else,
 # including the 14-day Pro trial, works.
+# Only main: the github-pages environment restricts which branches may deploy,
+# so running this on a feature branch builds fine and then fails at the deploy
+# step, which just adds a red check that says nothing about the code.
 on:
   push:
-    branches: [main, claude/headache-calendar-app-3crqne]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
