@@ -104,6 +104,9 @@ export interface Settings {
   historyWork?: string;
   historyFamily?: string;
   onboardingDone: boolean;
+  /** ISO timestamp of the last backup, used for the reminder. */
+  lastBackupAt?: string;
+  backupReminderDismissedAt?: string;
 }
 
 export interface AppData {

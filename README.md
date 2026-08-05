@@ -22,7 +22,11 @@ Single-Page-App plus zwei Edge-Funktionen für den Bezahlvorgang.
 - **Analyse (90 Tage)** – automatisch erkannte Muster, Auslöser-Profil, Wochentag- und
   Tageszeit-Verteilung, Begleitsymptome
 - **Warnung bei Medikamenten-Übergebrauch** nach den ICHD-3-Grenzwerten
-- **Backup** – Export/Import als JSON, inklusive Migration alter Einträge
+- **Verschlüsseltes Backup** – eine Datei mit allen Einträgen, per Passwort mit
+  AES-256-GCM verschlüsselt (PBKDF2, 310 000 Runden). Gedacht für den Gerätewechsel:
+  ablegen wo man will, auf dem neuen Handy einspielen. Dazu weiterhin Klartext-JSON
+  und die Migration alter Einträge
+- **Backup-Erinnerung**, wenn längere Zeit nicht gesichert wurde
 - **PWA** – installierbar, funktioniert offline
 - Deutsch/Englisch, Hell/Dunkel, Tageserinnerung
 
@@ -36,6 +40,9 @@ Single-Page-App plus zwei Edge-Funktionen für den Bezahlvorgang.
 - Eigene Auslöser, Symptome und Medikamente
 
 Neue Nutzer:innen können Pro **14 Tage kostenlos testen** (rein lokal, ohne Konto).
+Der **Arztbericht ist vom Test ausgenommen** – er schaltet erst mit dem Kauf frei, weil
+er der Grund ist, warum jemand die App kauft. Wer ihn nicht braucht, nutzt die App
+dauerhaft kostenlos und findet in den Einstellungen einen **Ko-fi-Spendenbutton**.
 
 ## Tech Stack
 
@@ -59,8 +66,9 @@ Zum Testen wird bei jedem Push auf `main` zusätzlich eine kostenlose Vorschau a
 Pages veröffentlicht: <https://alohaworld42.github.io/headache-harvest/>
 
 Dort läuft die identische App. Nur die Endpunkte unter `/api` existieren dort nicht,
-d. h. der Stripe-Kauf ist deaktiviert – der 14-tägige Pro-Test schaltet aber alle
-Pro-Funktionen frei, sodass sich alles ausprobieren lässt.
+d. h. der Stripe-Kauf ist deaktiviert. Der 14-tägige Pro-Test schaltet alles außer dem
+Arztbericht frei; den kann man auf der Vorschau nur mit einem von Hand ausgestellten
+Lizenzschlüssel sehen.
 
 Der Basispfad kommt aus der Umgebungsvariable `APP_BASE` (Standard `/`, Pages-Workflow
 setzt `/headache-harvest/`), Router, Manifest und Service Worker richten sich danach.
@@ -96,6 +104,18 @@ Für echte Umsätze in Vercel unter *Settings → Environment Variables* setzen:
 Für Impressum und Datenschutz zusätzlich (Build-Time, daher `VITE_`-Präfix):
 `VITE_LEGAL_NAME`, `VITE_LEGAL_ADDRESS`, `VITE_LEGAL_EMAIL`, `VITE_LEGAL_VAT_ID`.
 
+### Lizenzschlüssel von Hand ausstellen
+
+Für Ko-fi-Zahlungen, Überweisungen oder verlorene Schlüssel:
+
+```bash
+LICENSE_SECRET=… npm run license -- --email kunde@example.de
+LICENSE_SECRET=… npm run license -- --plan yearly --email kunde@example.de
+```
+
+Erzeugt exakt denselben HMAC-signierten Token wie der Checkout; einzulösen über
+*Einstellungen → Pro → Kauf wiederherstellen*.
+
 ### Wie der Kauf funktioniert
 
 1. Klick auf „Pro freischalten" → `POST /api/checkout` erzeugt eine Stripe-Checkout-Session
@@ -107,6 +127,16 @@ Für Impressum und Datenschutz zusätzlich (Build-Time, daher `VITE_`-Präfix):
 
 Es wird bewusst **keine Kundendatenbank** betrieben: Stripe ist die einzige Quelle der
 Wahrheit für „hat bezahlt", der Lizenzschlüssel ist ein signiertes Token.
+
+## Verkaufsstart
+
+Die vollständige Schritt-für-Schritt-Liste (Vercel, Stripe, Umgebungsvariablen,
+Testkauf, Rechtliches, laufender Betrieb) steht in
+[`docs/verkaufsstart.md`](docs/verkaufsstart.md).
+
+**Wichtig, bevor das Repository privat wird:** GitHub Pages liefert private
+Repositories nur mit bezahltem GitHub-Plan aus – die Vorschau-URL verschwindet sonst.
+Deshalb erst Vercel einrichten, dort prüfen, dann privat schalten.
 
 ## Wettbewerb
 

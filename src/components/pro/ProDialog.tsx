@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Check, Loader2, Sparkles } from 'lucide-react';
+import { Check, Coffee, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PRO_FEATURES, fetchPricing, startCheckout, verifyToken, type PricingResponse } from '@/lib/pro';
+import { KOFI_URL, PRO_FEATURES, fetchPricing, startCheckout, verifyToken, type PricingResponse } from '@/lib/pro';
 import { useApp } from '@/store/app-store';
 
 interface ProDialogProps {
@@ -39,13 +39,13 @@ export function ProDialog({ open, onOpenChange }: ProDialogProps) {
   const restore = async () => {
     if (!licenseKey.trim()) return;
     setBusy('restore');
-    const license = await verifyToken(licenseKey.trim());
+    const result = await verifyToken(licenseKey.trim());
     setBusy(null);
-    if (!license) {
-      toast.error(t('pro.restoreFail'));
+    if (result.status !== 'valid') {
+      toast.error(result.status === 'unreachable' ? t('pro.restoreOffline') : t('pro.restoreFail'));
       return;
     }
-    applyLicense(license);
+    applyLicense(result.license);
     toast.success(t('pro.restoreOk'));
     onOpenChange(false);
   };
@@ -65,9 +65,16 @@ export function ProDialog({ open, onOpenChange }: ProDialogProps) {
 
         <ul className="space-y-2.5 py-1">
           {PRO_FEATURES.map((feature) => (
-            <li key={feature} className="flex items-start gap-2.5 text-sm">
+            <li key={feature.key} className="flex items-start gap-2.5 text-sm">
               <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-              <span>{t(feature)}</span>
+              <span>
+                {t(feature.key)}
+                {feature.paidOnly && (
+                  <span className="ml-1.5 rounded-full bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
+                    {t('pro.inPurchaseOnly')}
+                  </span>
+                )}
+              </span>
             </li>
           ))}
         </ul>
@@ -125,11 +132,28 @@ export function ProDialog({ open, onOpenChange }: ProDialogProps) {
                 {t('pro.trialStart')}
               </Button>
             )}
+            {!pro.trialUsed && (
+              <p className="text-center text-xs text-muted-foreground">
+                {t('pro.trialExcludesReport')}
+              </p>
+            )}
             {pro.trialUsed && pro.trialDaysLeft === 0 && (
               <p className="text-center text-xs text-muted-foreground">{t('pro.trialOver')}</p>
             )}
           </div>
         )}
+
+        <div className="border-t pt-3">
+          <div className="mb-3 flex flex-wrap items-center gap-2">
+            <p className="text-xs text-muted-foreground">{t('pro.donateHint')}</p>
+            <Button asChild variant="outline" size="sm" className="ml-auto gap-1.5">
+              <a href={KOFI_URL} target="_blank" rel="noopener noreferrer">
+                <Coffee className="h-4 w-4" />
+                {t('pro.donateShort')}
+              </a>
+            </Button>
+          </div>
+        </div>
 
         <div className="border-t pt-3">
           {showRestore ? (

@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { format, subDays } from 'date-fns';
-import { AlertTriangle, ArrowRight, CalendarPlus } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CalendarPlus, ShieldCheck } from 'lucide-react';
 import {
   Area,
   AreaChart,
@@ -26,9 +26,20 @@ interface DashboardProps {
   onUpgrade: () => void;
 }
 
+/** Nag about backups once there is enough in the diary to be worth losing. */
+const BACKUP_NAG_MIN_ENTRIES = 8;
+const BACKUP_NAG_AFTER_DAYS = 45;
+
 export default function Dashboard({ onNewEntry, onEditEntry, onUpgrade }: DashboardProps) {
-  const { t, attacks, lang, locale, pro } = useApp();
+  const { t, attacks, lang, locale, pro, settings, updateSettings } = useApp();
   const [range, setRange] = useState<RangeValue>('90');
+
+  const daysSince = (iso?: string) =>
+    iso ? (Date.now() - new Date(iso).getTime()) / 86_400_000 : Number.POSITIVE_INFINITY;
+  const needsBackup =
+    attacks.length >= BACKUP_NAG_MIN_ENTRIES &&
+    daysSince(settings.lastBackupAt) > BACKUP_NAG_AFTER_DAYS &&
+    daysSince(settings.backupReminderDismissedAt) > BACKUP_NAG_AFTER_DAYS;
 
   const days = rangeDays(range);
   const to = format(new Date(), ISO);
@@ -72,6 +83,28 @@ export default function Dashboard({ onNewEntry, onEditEntry, onUpgrade }: Dashbo
           onLockedPick={onUpgrade}
         />
       </header>
+
+      {needsBackup && (
+        <div className="flex flex-wrap gap-3 rounded-2xl border border-primary/30 bg-primary/5 p-4">
+          <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <div className="min-w-0 flex-1 space-y-1">
+            <p className="text-sm font-medium">{t('backup.reminderTitle')}</p>
+            <p className="text-sm text-muted-foreground">{t('backup.reminderBody')}</p>
+          </div>
+          <div className="flex w-full gap-2 sm:w-auto">
+            <Button size="sm" asChild>
+              <Link to="/settings">{t('backup.reminderAction')}</Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => updateSettings({ backupReminderDismissedAt: new Date().toISOString() })}
+            >
+              {t('backup.reminderDismiss')}
+            </Button>
+          </div>
+        </div>
+      )}
 
       {mohRisk && (
         <div className="flex gap-3 rounded-2xl border border-destructive/40 bg-destructive/10 p-4">

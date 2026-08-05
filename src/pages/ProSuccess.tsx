@@ -28,13 +28,19 @@ export default function ProSuccess() {
         setState('error');
         return;
       }
-      const license = (await verifyToken(redeemed.token)) ?? {
-        token: redeemed.token,
-        email: redeemed.email,
-        plan: 'pro' as const,
-        verifiedAt: new Date().toISOString(),
-      };
-      applyLicense(license);
+      // The token was just minted by our own endpoint, so trust it even if the
+      // follow-up verification cannot be reached right now.
+      const verified = await verifyToken(redeemed.token);
+      applyLicense(
+        verified.status === 'valid'
+          ? verified.license
+          : {
+              token: redeemed.token,
+              email: redeemed.email,
+              plan: 'pro' as const,
+              verifiedAt: new Date().toISOString(),
+            },
+      );
       setToken(redeemed.token);
       setState('done');
     })();

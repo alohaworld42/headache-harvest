@@ -200,6 +200,44 @@ const de = {
     'Alle Einträge bleiben auf diesem Gerät. Es gibt kein Nutzerkonto und keinen Server, der deine Gesundheitsdaten speichert.',
   'settings.version': 'Version',
 
+  'pro.buyNow': 'Jetzt kaufen',
+  'pro.checkoutCancelled': 'Kauf abgebrochen – es wurde nichts abgebucht.',
+  'pro.paidOnly': 'Der Arztbericht gehört zum Kauf',
+  'pro.paidOnlyBody':
+    'Alle anderen Pro-Funktionen kannst du im Test nutzen. Der Arztbericht ist der Grund, warum es die App zu kaufen gibt – er wird mit dem Kauf freigeschaltet.',
+  'pro.trialExcludesReport': 'Im Test enthalten – ohne Arztbericht',
+  'pro.inPurchaseOnly': 'nur im Kauf',
+  'pro.donate': 'Spenden über Ko-fi',
+  'pro.donateHint':
+    'Du brauchst den Arztbericht nicht, magst die App aber? Ein Kaffee hilft bei der Weiterentwicklung.',
+  'pro.donateShort': 'Kaffee spendieren',
+
+  'backup.encrypted': 'Verschlüsseltes Backup',
+  'backup.encryptedHint':
+    'Eine Datei mit allen Einträgen, mit deinem Passwort verschlüsselt. Sicher genug für Cloud, Mail an dich selbst oder USB-Stick.',
+  'backup.passphrase': 'Passwort',
+  'backup.passphraseRepeat': 'Passwort wiederholen',
+  'backup.passphraseHint':
+    'Ohne dieses Passwort ist die Datei nicht wiederherstellbar – es gibt keine Hintertür. Schreib es dir auf.',
+  'backup.passphraseMismatch': 'Die Passwörter stimmen nicht überein.',
+  'backup.passphraseTooShort': 'Bitte mindestens 8 Zeichen.',
+  'backup.strength.weak': 'Schwach',
+  'backup.strength.ok': 'In Ordnung',
+  'backup.strength.strong': 'Stark',
+  'backup.create': 'Backup erstellen',
+  'backup.restoreTitle': 'Verschlüsseltes Backup einspielen',
+  'backup.restoreHint': 'Gib das Passwort ein, mit dem die Datei erstellt wurde.',
+  'backup.restore': 'Wiederherstellen',
+  'backup.wrongPassphrase': 'Falsches Passwort – die Datei konnte nicht entschlüsselt werden.',
+  'backup.created': 'Verschlüsseltes Backup gespeichert',
+  'backup.never': 'Noch nie gesichert',
+  'backup.lastAt': 'Zuletzt gesichert: {0}',
+  'backup.reminderTitle': 'Sichere deine Einträge',
+  'backup.reminderBody':
+    'Deine Daten liegen nur auf diesem Gerät. Geht es verloren oder löschst du die Browserdaten, sind die Einträge weg. Ein verschlüsseltes Backup dauert zehn Sekunden.',
+  'backup.reminderAction': 'Backup erstellen',
+  'backup.reminderDismiss': 'Später',
+
   'pro.title': 'Kopfweh Pro',
   'pro.subtitle': 'Tiefe Auswertung, Arztbericht und Export – einmal zahlen, dauerhaft nutzen.',
   'pro.badge': 'Pro',
@@ -228,6 +266,8 @@ const de = {
   'pro.licenseKey': 'Lizenzschlüssel',
   'pro.restoreOk': 'Pro wurde freigeschaltet.',
   'pro.restoreFail': 'Der Schlüssel konnte nicht bestätigt werden.',
+  'pro.restoreOffline':
+    'Der Server ist gerade nicht erreichbar. Bitte später noch einmal versuchen – dein Kauf bleibt gültig.',
   'pro.checkoutUnavailable':
     'Der Bezahlvorgang ist noch nicht konfiguriert. Du kannst Pro solange kostenlos testen.',
   'pro.thanksTitle': 'Danke für deinen Kauf!',
@@ -466,6 +506,44 @@ const en: Record<TranslationKey, string> = {
     'All entries stay on this device. There is no account and no server storing your health data.',
   'settings.version': 'Version',
 
+  'pro.buyNow': 'Buy now',
+  'pro.checkoutCancelled': 'Checkout cancelled – nothing was charged.',
+  'pro.paidOnly': 'The doctor report comes with the purchase',
+  'pro.paidOnlyBody':
+    'Every other Pro feature is part of the trial. The doctor report is the reason to buy the app, so it unlocks on purchase.',
+  'pro.trialExcludesReport': 'Included in the trial – except the doctor report',
+  'pro.inPurchaseOnly': 'purchase only',
+  'pro.donate': 'Donate via Ko-fi',
+  'pro.donateHint':
+    'Do not need the doctor report but like the app? A coffee keeps it moving.',
+  'pro.donateShort': 'Buy a coffee',
+
+  'backup.encrypted': 'Encrypted backup',
+  'backup.encryptedHint':
+    'One file with every entry, encrypted with your password. Safe enough for cloud storage, an e-mail to yourself or a USB stick.',
+  'backup.passphrase': 'Password',
+  'backup.passphraseRepeat': 'Repeat password',
+  'backup.passphraseHint':
+    'Without this password the file cannot be recovered – there is no back door. Write it down.',
+  'backup.passphraseMismatch': 'The passwords do not match.',
+  'backup.passphraseTooShort': 'Please use at least 8 characters.',
+  'backup.strength.weak': 'Weak',
+  'backup.strength.ok': 'Acceptable',
+  'backup.strength.strong': 'Strong',
+  'backup.create': 'Create backup',
+  'backup.restoreTitle': 'Restore encrypted backup',
+  'backup.restoreHint': 'Enter the password the file was created with.',
+  'backup.restore': 'Restore',
+  'backup.wrongPassphrase': 'Wrong password – the file could not be decrypted.',
+  'backup.created': 'Encrypted backup saved',
+  'backup.never': 'Never backed up',
+  'backup.lastAt': 'Last backup: {0}',
+  'backup.reminderTitle': 'Back up your entries',
+  'backup.reminderBody':
+    'Your data lives on this device only. Lose it or clear your browser data and the entries are gone. An encrypted backup takes ten seconds.',
+  'backup.reminderAction': 'Create backup',
+  'backup.reminderDismiss': 'Later',
+
   'pro.title': 'Kopfweh Pro',
   'pro.subtitle': 'Deep analysis, doctor report and export – pay once, use forever.',
   'pro.badge': 'Pro',
@@ -494,6 +572,8 @@ const en: Record<TranslationKey, string> = {
   'pro.licenseKey': 'Licence key',
   'pro.restoreOk': 'Pro has been unlocked.',
   'pro.restoreFail': 'The key could not be verified.',
+  'pro.restoreOffline':
+    'The server is unreachable right now. Please try again later – your purchase stays valid.',
   'pro.checkoutUnavailable': 'Checkout is not configured yet. You can use the free Pro trial meanwhile.',
   'pro.thanksTitle': 'Thanks for your purchase!',
   'pro.thanksBody': 'Pro is now unlocked on this device.',

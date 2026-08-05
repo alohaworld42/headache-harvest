@@ -55,22 +55,22 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
         </div>
         <div className="flex items-center gap-2">
           <RangeSelect value={range} onChange={setRange} />
-          {/* Without Pro the report itself is not rendered, so printing would
-              produce a blank page — send the user to the paywall instead. */}
+          {/* The report needs a purchase, not just the trial. Without it nothing
+              is rendered, so printing would produce a blank page. */}
           <Button
             size="sm"
             className="gap-1.5"
-            onClick={() => (pro.active ? window.print() : onUpgrade())}
+            onClick={() => (pro.paid ? window.print() : onUpgrade())}
           >
             <Printer className="h-4 w-4" />
             <span className="hidden sm:inline">
-              {pro.active ? t('action.print') : t('action.upgrade')}
+              {pro.paid ? t('action.print') : t('pro.buyNow')}
             </span>
           </Button>
         </div>
       </header>
 
-      <ProGate onUpgrade={onUpgrade}>
+      <ProGate onUpgrade={onUpgrade} require="paid">
         <article className="surface print-page space-y-6 p-6 sm:p-8">
           <div className="flex flex-wrap items-start justify-between gap-4 border-b pb-4">
             <div>

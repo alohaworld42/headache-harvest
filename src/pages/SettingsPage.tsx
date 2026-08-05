@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { Check, Copy, Download, FileSpreadsheet, Sparkles, Trash2, Upload } from 'lucide-react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Check, Coffee, Copy, Download, FileSpreadsheet, ShieldCheck, Sparkles, Trash2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   AlertDialog,
@@ -16,7 +17,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { BackupDialog } from '@/components/backup/BackupDialog';
 import { attacksToCsv, downloadFile, timestampedName } from '@/lib/export';
+import { decryptBackup, encryptBackup, isEncryptedBackup, WrongPassphraseError } from '@/lib/crypto';
+import { KOFI_URL } from '@/lib/pro';
 import { buildBackup, parseBackup } from '@/lib/storage';
 import { useApp } from '@/store/app-store';
 import { APP_VERSION } from '@/lib/version';
@@ -55,6 +59,18 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
   const fileInput = useRef<HTMLInputElement>(null);
   const [confirmClear, setConfirmClear] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [backupMode, setBackupMode] = useState<'create' | 'restore' | null>(null);
+  /** Holds an encrypted file until the passphrase has been entered. */
+  const [pendingCipher, setPendingCipher] = useState<string | null>(null);
+  const [params, setParams] = useSearchParams();
+
+  // Stripe sends people back here when they abandon the checkout.
+  useEffect(() => {
+    if (params.get('checkout') !== 'cancelled') return;
+    toast.info(t('pro.checkoutCancelled'));
+    params.delete('checkout');
+    setParams(params, { replace: true });
+  }, [params, setParams, t]);
 
   const exportJson = () => {
     if (!attacks.length) {
@@ -66,6 +82,7 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
       timestampedName('kopfweh-backup', 'json'),
       'application/json',
     );
+    updateSettings({ lastBackupAt: new Date().toISOString() });
     toast.success(t('toast.exported'));
   };
 
@@ -82,21 +99,52 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
     toast.success(t('toast.csvExported'));
   };
 
+  const applyBackupText = (text: string) => {
+    const parsed = parseBackup(text);
+    const count = importAttacks(parsed.attacks, parsed.settings);
+    toast.success(t('toast.imported', count));
+  };
+
   const handleImport = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = '';
     if (!file) return;
     const reader = new FileReader();
     reader.onload = () => {
+      const text = String(reader.result);
+      // Encrypted files need the passphrase first; plain ones go straight in.
+      if (isEncryptedBackup(text)) {
+        setPendingCipher(text);
+        setBackupMode('restore');
+        return;
+      }
       try {
-        const parsed = parseBackup(String(reader.result));
-        const count = importAttacks(parsed.attacks, parsed.settings);
-        toast.success(t('toast.imported', count));
+        applyBackupText(text);
       } catch {
         toast.error(t('toast.importFailed'));
       }
     };
     reader.readAsText(file);
+  };
+
+  const createEncryptedBackup = async (passphrase: string) => {
+    if (!attacks.length) throw new Error(t('toast.noData'));
+    const payload = await encryptBackup(JSON.stringify(buildBackup(data)), passphrase);
+    downloadFile(payload, timestampedName('kopfweh-backup', 'kopfweh'), 'application/json');
+    updateSettings({ lastBackupAt: new Date().toISOString() });
+    toast.success(t('backup.created'));
+  };
+
+  const restoreEncryptedBackup = async (passphrase: string) => {
+    if (!pendingCipher) return;
+    try {
+      const plain = await decryptBackup(pendingCipher, passphrase);
+      applyBackupText(plain);
+      setPendingCipher(null);
+    } catch (error) {
+      if (error instanceof WrongPassphraseError) throw new Error(t('backup.wrongPassphrase'));
+      throw new Error(t('toast.importFailed'));
+    }
   };
 
   const copyLicense = async () => {
@@ -246,6 +294,12 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
       </Card>
 
       <Card title={t('settings.data')}>
+        <Row title={t('backup.encrypted')} hint={t('backup.encryptedHint')}>
+          <Button size="sm" className="gap-1.5" onClick={() => setBackupMode('create')}>
+            <ShieldCheck className="h-4 w-4" />
+            {t('backup.create')}
+          </Button>
+        </Row>
         <Row title={t('settings.exportJson')} hint={t('settings.exportJsonHint')}>
           <Button variant="outline" size="sm" className="gap-1.5" onClick={exportJson}>
             <Download className="h-4 w-4" />
@@ -260,7 +314,7 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
           <input
             ref={fileInput}
             type="file"
-            accept="application/json,.json"
+            accept="application/json,.json,.kopfweh"
             className="hidden"
             onChange={handleImport}
           />
@@ -284,12 +338,39 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
         </Row>
       </Card>
 
+      <Card title={t('pro.donate')}>
+        <div className="space-y-3 pt-2">
+          <p className="text-sm text-muted-foreground">{t('pro.donateHint')}</p>
+          <Button asChild variant="outline" size="sm" className="gap-1.5">
+            <a href={KOFI_URL} target="_blank" rel="noopener noreferrer">
+              <Coffee className="h-4 w-4" />
+              {t('pro.donateShort')}
+            </a>
+          </Button>
+        </div>
+      </Card>
+
       <Card title={t('settings.about')}>
         <p className="py-2 text-sm text-muted-foreground">{t('settings.privacyNote')}</p>
         <p className="text-xs text-muted-foreground">
-          {t('settings.version')} {APP_VERSION} · {attacks.length} {t('common.entries')}
+          {t('settings.version')} {APP_VERSION} · {attacks.length} {t('common.entries')} ·{' '}
+          {settings.lastBackupAt
+            ? t('backup.lastAt', new Date(settings.lastBackupAt).toLocaleDateString(lang))
+            : t('backup.never')}
         </p>
       </Card>
+
+      <BackupDialog
+        open={backupMode !== null}
+        mode={backupMode ?? 'create'}
+        onOpenChange={(next) => {
+          if (!next) {
+            setBackupMode(null);
+            setPendingCipher(null);
+          }
+        }}
+        onSubmit={backupMode === 'restore' ? restoreEncryptedBackup : createEncryptedBackup}
+      />
 
       <AlertDialog open={confirmClear} onOpenChange={setConfirmClear}>
         <AlertDialogContent>

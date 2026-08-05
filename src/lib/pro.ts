@@ -7,7 +7,14 @@ const VERIFY_GRACE_DAYS = 60;
 export type ProSource = 'none' | 'trial' | 'license';
 
 export interface ProStatus {
+  /** Pro features are available — through a purchase or the trial. */
   active: boolean;
+  /**
+   * A purchase is in place. The doctor report is deliberately tied to this and
+   * not to the trial: it is the feature people buy the app for, so handing it
+   * out for free would leave no reason to pay.
+   */
+  paid: boolean;
   source: ProSource;
   trialDaysLeft: number;
   trialUsed: boolean;
@@ -35,11 +42,19 @@ export function trialDaysLeft(trial: Trial | undefined): number {
 export function proStatus(data: AppData): ProStatus {
   const license = data.license;
   if (licenseActive(license)) {
-    return { active: true, source: 'license', trialDaysLeft: 0, trialUsed: Boolean(data.trial), license };
+    return {
+      active: true,
+      paid: true,
+      source: 'license',
+      trialDaysLeft: 0,
+      trialUsed: Boolean(data.trial),
+      license,
+    };
   }
   const left = trialDaysLeft(data.trial);
   return {
     active: left > 0,
+    paid: false,
     source: left > 0 ? 'trial' : 'none',
     trialDaysLeft: left,
     trialUsed: Boolean(data.trial),
@@ -107,42 +122,71 @@ export async function redeemSession(sessionId: string): Promise<RedeemResult | n
   }
 }
 
-export async function verifyToken(token: string): Promise<License | null> {
+/**
+ * Three outcomes, and the difference matters: a licence may only be discarded
+ * when the server actually says it is invalid. Treating an unreachable endpoint
+ * as a rejection would log out paying customers who happen to be offline, or
+ * whenever the deployment has a hiccup.
+ */
+export type VerifyResult =
+  | { status: 'valid'; license: License }
+  | { status: 'invalid' }
+  | { status: 'unreachable' };
+
+export async function verifyToken(token: string): Promise<VerifyResult> {
+  let response: Response;
   try {
-    const response = await fetch('/api/license', {
+    response = await fetch('/api/license', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ token }),
     });
-    if (!response.ok) return null;
+  } catch {
+    return { status: 'unreachable' };
+  }
+
+  // 5xx and a missing endpoint are infrastructure problems, not verdicts.
+  if (!response.ok) return { status: 'unreachable' };
+
+  try {
     const data = (await response.json()) as {
       valid: boolean;
       plan?: string;
       email?: string;
       expiresAt?: string;
     };
-    if (!data.valid) return null;
+    if (!data.valid) return { status: 'invalid' };
     return {
-      token,
-      email: data.email,
-      plan: 'pro',
-      verifiedAt: new Date().toISOString(),
-      expiresAt: data.expiresAt,
+      status: 'valid',
+      license: {
+        token,
+        email: data.email,
+        plan: 'pro',
+        verifiedAt: new Date().toISOString(),
+        expiresAt: data.expiresAt,
+      },
     };
   } catch {
-    return null;
+    return { status: 'unreachable' };
   }
 }
 
-/** Features gated behind Pro. Keeping them in one place makes the paywall auditable. */
+/**
+ * Features gated behind Pro, in one place so the paywall stays auditable.
+ * `paidOnly` entries are excluded from the trial.
+ */
 export const PRO_FEATURES = [
-  'pro.feature.insights',
-  'pro.feature.report',
-  'pro.feature.csv',
-  'pro.feature.year',
-  'pro.feature.moh',
-  'pro.feature.custom',
+  { key: 'pro.feature.report', paidOnly: true },
+  { key: 'pro.feature.insights', paidOnly: false },
+  { key: 'pro.feature.csv', paidOnly: false },
+  { key: 'pro.feature.year', paidOnly: false },
+  { key: 'pro.feature.moh', paidOnly: false },
+  { key: 'pro.feature.custom', paidOnly: false },
 ] as const;
 
 /** The free tier still shows insights, but only for the most recent window. */
 export const FREE_ANALYSIS_DAYS = 90;
+
+/** Donation page. Configurable so a fork can point somewhere else. */
+export const KOFI_HANDLE = import.meta.env.VITE_KOFI_HANDLE ?? 'sunspotted';
+export const KOFI_URL = `https://ko-fi.com/${KOFI_HANDLE}`;
