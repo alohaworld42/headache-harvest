@@ -11,7 +11,6 @@ import type { Attack, MedicationClass } from './types';
 
 export const ISO = 'yyyy-MM-dd';
 
-
 export function inRange(attack: Attack, from: string, to: string): boolean {
   return attack.date >= from && attack.date <= to;
 }
@@ -20,20 +19,15 @@ export function filterRange(attacks: Attack[], from: string, to: string): Attack
   return attacks.filter((attack) => inRange(attack, from, to));
 }
 
-
 export interface Summary {
   attackCount: number;
   headacheDays: number;
   daysInRange: number;
   avgIntensity: number;
-  maxIntensity: number;
   avgDurationMinutes: number;
-  totalDurationMinutes: number;
   medicationDays: number;
-  acuteMedicationIntakes: number;
   severeDays: number;
   auraShare: number;
-  headacheDayShare: number;
 }
 
 const ACUTE_CLASSES: MedicationClass[] = [
@@ -56,10 +50,6 @@ export function summarize(attacks: Attack[], from: string, to: string): Summary 
       .filter((attack) => attack.medications.some((med) => isAcute(med.medClass)))
       .map((attack) => attack.date),
   );
-  const acuteIntakes = scoped.reduce(
-    (sum, attack) => sum + attack.medications.filter((med) => isAcute(med.medClass)).length,
-    0,
-  );
   const daysInRange = Math.max(1, differenceInCalendarDays(parseISO(to), parseISO(from)) + 1);
 
   return {
@@ -69,14 +59,10 @@ export function summarize(attacks: Attack[], from: string, to: string): Summary 
     avgIntensity: scoped.length
       ? scoped.reduce((sum, attack) => sum + attack.intensity, 0) / scoped.length
       : 0,
-    maxIntensity: scoped.reduce((max, attack) => Math.max(max, attack.intensity), 0),
     avgDurationMinutes: withDuration.length ? totalDuration / withDuration.length : 0,
-    totalDurationMinutes: totalDuration,
     medicationDays: medicationDays.size,
-    acuteMedicationIntakes: acuteIntakes,
     severeDays: new Set(scoped.filter((attack) => attack.impact === 'severe').map((a) => a.date)).size,
     auraShare: scoped.length ? scoped.filter((attack) => attack.aura).length / scoped.length : 0,
-    headacheDayShare: days.size / daysInRange,
   };
 }
 
@@ -565,5 +551,4 @@ export function formatDuration(minutes: number | undefined, lang: 'de' | 'en'): 
   if (rest === 0) return lang === 'de' ? `${hours} Std.` : `${hours} h`;
   return lang === 'de' ? `${hours} Std. ${rest} min` : `${hours} h ${rest} min`;
 }
-
 
