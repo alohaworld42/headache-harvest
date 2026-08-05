@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { format } from 'date-fns';
 import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
@@ -53,6 +53,7 @@ function useReminder() {
 
 function AppInner() {
   const { settings, updateSettings } = useApp();
+  const location = useLocation();
   const [entryOpen, setEntryOpen] = useState(false);
   const [quickOpen, setQuickOpen] = useState(false);
   const [editing, setEditing] = useState<Attack | undefined>();
@@ -119,7 +120,12 @@ function AppInner() {
         onOpenFullEditor={openEdit}
       />
       <ProDialog open={proOpen} onOpenChange={setProOpen} />
-      <Onboarding open={!settings.onboardingDone} onDone={() => updateSettings({ onboardingDone: true })} />
+      {/* Someone arriving on an imprint or privacy link should read that page,
+          not have to dismiss a welcome dialog first. */}
+      <Onboarding
+        open={!settings.onboardingDone && !location.pathname.startsWith('/legal')}
+        onDone={() => updateSettings({ onboardingDone: true })}
+      />
     </>
   );
 }

@@ -87,6 +87,19 @@ export const SYMPTOMS: CatalogItem[] = [
   { id: 'stiff_neck', de: 'Nackensteife', en: 'Stiff neck' },
 ];
 
+/**
+ * Pain character. The DMKG headache calendar asks for this per attack because it
+ * separates migraine (pulsierend/stechend) from tension-type (dumpf/drückend).
+ */
+export const PAIN_QUALITIES: CatalogItem[] = [
+  { id: 'pulsating', de: 'Pulsierend / pochend', en: 'Pulsating / throbbing' },
+  { id: 'stabbing', de: 'Stechend', en: 'Stabbing' },
+  { id: 'dull', de: 'Dumpf / drückend', en: 'Dull / pressing' },
+  { id: 'burning', de: 'Brennend', en: 'Burning' },
+  { id: 'pulling', de: 'Ziehend', en: 'Pulling' },
+  { id: 'exertion_worse', de: 'Schlimmer bei Bewegung', en: 'Worse on movement' },
+];
+
 export const LOCATIONS: CatalogItem[] = [
   { id: 'left', de: 'Linksseitig', en: 'Left side' },
   { id: 'right', de: 'Rechtsseitig', en: 'Right side' },

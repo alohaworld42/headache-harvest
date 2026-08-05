@@ -224,6 +224,27 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
         </Row>
       </Card>
 
+      <Card title={t('settings.history')}>
+        <p className="pb-1 pt-1 text-xs text-muted-foreground">{t('settings.historyHint')}</p>
+        {(
+          [
+            ['historySince', 'settings.historySince'],
+            ['historyConditions', 'settings.historyConditions'],
+            ['historyPreventive', 'settings.historyPreventive'],
+            ['historyWork', 'settings.historyWork'],
+            ['historyFamily', 'settings.historyFamily'],
+          ] as const
+        ).map(([field, labelKey]) => (
+          <Row key={field} title={t(labelKey)}>
+            <Input
+              value={settings[field] ?? ''}
+              onChange={(event) => updateSettings({ [field]: event.target.value })}
+              className="w-[220px]"
+            />
+          </Row>
+        ))}
+      </Card>
+
       <Card title={t('settings.data')}>
         <Row title={t('settings.exportJson')} hint={t('settings.exportJsonHint')}>
           <Button variant="outline" size="sm" className="gap-1.5" onClick={exportJson}>

@@ -13,11 +13,11 @@ import {
   summarize,
   triggerImpact,
 } from '@/lib/analytics';
-import { HEADACHE_TYPES, label as catalogLabel } from '@/lib/catalog';
+import { HEADACHE_TYPES, PAIN_QUALITIES, resolveLabel, label as catalogLabel } from '@/lib/catalog';
 import { useApp } from '@/store/app-store';
 
 export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
-  const { t, attacks, settings, lang, locale, labelFor } = useApp();
+  const { t, attacks, settings, lang, locale, labelFor, pro } = useApp();
   const [range, setRange] = useState<RangeValue>('90');
 
   const days = rangeDays(range);
@@ -35,6 +35,17 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
 
   const fmtDate = (iso: string) => format(parseISO(iso), 'P', { locale });
 
+  // Only fields the user actually filled in reach the report.
+  const historyRows = (
+    [
+      ['settings.historySince', settings.historySince],
+      ['settings.historyConditions', settings.historyConditions],
+      ['settings.historyPreventive', settings.historyPreventive],
+      ['settings.historyWork', settings.historyWork],
+      ['settings.historyFamily', settings.historyFamily],
+    ] as const
+  ).filter((row): row is [(typeof row)[0], string] => Boolean(row[1]?.trim()));
+
   return (
     <div className="space-y-6">
       <header className="flex flex-wrap items-end justify-between gap-3 print-hidden">
@@ -44,9 +55,17 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
         </div>
         <div className="flex items-center gap-2">
           <RangeSelect value={range} onChange={setRange} />
-          <Button size="sm" className="gap-1.5" onClick={() => window.print()}>
+          {/* Without Pro the report itself is not rendered, so printing would
+              produce a blank page — send the user to the paywall instead. */}
+          <Button
+            size="sm"
+            className="gap-1.5"
+            onClick={() => (pro.active ? window.print() : onUpgrade())}
+          >
             <Printer className="h-4 w-4" />
-            <span className="hidden sm:inline">{t('action.print')}</span>
+            <span className="hidden sm:inline">
+              {pro.active ? t('action.print') : t('action.upgrade')}
+            </span>
           </Button>
         </div>
       </header>
@@ -119,6 +138,20 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
             </div>
           </section>
 
+          {historyRows.length > 0 && (
+            <section className="print-break">
+              <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide">{t('report.history')}</h3>
+              <dl className="grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
+                {historyRows.map(([labelKey, value]) => (
+                  <div key={labelKey}>
+                    <dt className="inline text-muted-foreground">{t(labelKey)}: </dt>
+                    <dd className="inline">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          )}
+
           {triggers.length > 0 && (
             <section className="print-break">
               <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide">
@@ -183,6 +216,7 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
                     <th className="py-1.5 pr-2 font-medium">{t('report.columns.duration')}</th>
                     <th className="py-1.5 pr-2 font-medium">{t('report.columns.intensity')}</th>
                     <th className="py-1.5 pr-2 font-medium">{t('report.columns.type')}</th>
+                    <th className="py-1.5 pr-2 font-medium">{t('report.columns.quality')}</th>
                     <th className="py-1.5 pr-2 font-medium">{t('report.columns.symptoms')}</th>
                     <th className="py-1.5 pr-2 font-medium">{t('report.columns.triggers')}</th>
                     <th className="py-1.5 font-medium">{t('report.columns.medication')}</th>
@@ -201,6 +235,10 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
                         <td className="py-1.5 pr-2 tabular">{attack.intensity}/10</td>
                         <td className="py-1.5 pr-2">{type ? catalogLabel(type, lang) : '–'}</td>
                         <td className="py-1.5 pr-2">
+                          {attack.qualities.map((id) => resolveLabel(PAIN_QUALITIES, id, lang)).join(', ') ||
+                            '–'}
+                        </td>
+                        <td className="py-1.5 pr-2">
                           {attack.symptoms.map((id) => labelFor('symptom', id)).join(', ') || '–'}
                         </td>
                         <td className="py-1.5 pr-2">
@@ -216,7 +254,7 @@ export default function ReportPage({ onUpgrade }: { onUpgrade: () => void }) {
                   })}
                   {!scoped.length && (
                     <tr>
-                      <td colSpan={8} className="py-6 text-center text-muted-foreground">
+                      <td colSpan={9} className="py-6 text-center text-muted-foreground">
                         {t('insights.noData')}
                       </td>
                     </tr>

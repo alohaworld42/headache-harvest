@@ -32,6 +32,7 @@ import {
   KNOWN_MEDICATIONS,
   LOCATIONS,
   MEDICATION_CLASSES,
+  PAIN_QUALITIES,
   RELIEF,
   SYMPTOMS,
   TRIGGERS,
@@ -62,6 +63,7 @@ interface DraftState {
   type: HeadacheType;
   aura: boolean;
   locations: string[];
+  qualities: string[];
   symptoms: string[];
   triggers: string[];
   relief: string[];
@@ -85,6 +87,7 @@ function toDraft(attack: Attack | undefined, defaultDate: string): DraftState {
       type: 'other',
       aura: false,
       locations: [],
+      qualities: [],
       symptoms: [],
       triggers: [],
       relief: [],
@@ -107,6 +110,7 @@ function toDraft(attack: Attack | undefined, defaultDate: string): DraftState {
     type: attack.type,
     aura: attack.aura,
     locations: attack.locations,
+    qualities: attack.qualities,
     symptoms: attack.symptoms,
     triggers: attack.triggers,
     relief: attack.relief,
@@ -121,6 +125,18 @@ function toDraft(attack: Attack | undefined, defaultDate: string): DraftState {
 }
 
 const EFFECT_OPTIONS: Effectiveness[] = ['unknown', 'none', 'partial', 'full'];
+
+/** Catalog entries plus the user's own additions, both already translated. */
+function toOptions(
+  items: { id: string; de: string; en: string }[],
+  customs: string[],
+  lang: 'de' | 'en',
+): ChipOption[] {
+  return [
+    ...items.map((item) => ({ id: item.id, label: catalogLabel(item, lang) })),
+    ...customs.map((custom) => ({ id: custom, label: custom })),
+  ];
+}
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
@@ -149,21 +165,17 @@ export function EntryDialog({ open, onOpenChange, attack, defaultDate, onUpgrade
   const set = <K extends keyof DraftState>(key: K, value: DraftState[K]) =>
     setDraft((current) => ({ ...current, [key]: value }));
 
-  const toOptions = (items: { id: string; de: string; en: string }[], customs: string[]): ChipOption[] => [
-    ...items.map((item) => ({ id: item.id, label: catalogLabel(item, lang) })),
-    ...customs.map((custom) => ({ id: custom, label: custom })),
-  ];
-
   const triggerOptions = useMemo(
-    () => toOptions(TRIGGERS, settings.customTriggers),
+    () => toOptions(TRIGGERS, settings.customTriggers, lang),
     [lang, settings.customTriggers],
   );
   const symptomOptions = useMemo(
-    () => toOptions(SYMPTOMS, settings.customSymptoms),
+    () => toOptions(SYMPTOMS, settings.customSymptoms, lang),
     [lang, settings.customSymptoms],
   );
-  const locationOptions = useMemo(() => toOptions(LOCATIONS, []), [lang]);
-  const reliefOptions = useMemo(() => toOptions(RELIEF, []), [lang]);
+  const locationOptions = useMemo(() => toOptions(LOCATIONS, [], lang), [lang]);
+  const qualityOptions = useMemo(() => toOptions(PAIN_QUALITIES, [], lang), [lang]);
+  const reliefOptions = useMemo(() => toOptions(RELIEF, [], lang), [lang]);
 
   const medicationSuggestions = useMemo(
     () => [...new Set([...KNOWN_MEDICATIONS.map((med) => med.name), ...settings.customMedications])],
@@ -232,6 +244,7 @@ export function EntryDialog({ open, onOpenChange, attack, defaultDate, onUpgrade
       type: draft.type,
       aura: draft.aura || draft.type === 'migraine_aura',
       locations: draft.locations,
+      qualities: draft.qualities,
       symptoms: draft.symptoms,
       triggers: draft.triggers,
       relief: draft.relief,
@@ -406,6 +419,14 @@ export function EntryDialog({ open, onOpenChange, attack, defaultDate, onUpgrade
                 options={locationOptions}
                 value={draft.locations}
                 onChange={(next) => set('locations', next)}
+              />
+            </Section>
+
+            <Section title={t('entry.quality')}>
+              <ChipSelect
+                options={qualityOptions}
+                value={draft.qualities}
+                onChange={(next) => set('qualities', next)}
               />
             </Section>
 

@@ -46,6 +46,8 @@ export interface Attack {
   type: HeadacheType;
   aura: boolean;
   locations: string[];
+  /** Pain character, e.g. pulsating or dull — see PAIN_QUALITIES. */
+  qualities: string[];
   symptoms: string[];
   triggers: string[];
   medications: MedicationIntake[];
@@ -92,6 +94,15 @@ export interface Settings {
   /** Personal data used on the doctor report. */
   patientName?: string;
   patientBirthDate?: string;
+  /**
+   * Short medical history for the doctor report. Stiftung Warentest's 2022 review
+   * found the missing history to be the main weakness across headache apps.
+   */
+  historySince?: string;
+  historyConditions?: string;
+  historyPreventive?: string;
+  historyWork?: string;
+  historyFamily?: string;
   onboardingDone: boolean;
 }
 

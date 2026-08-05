@@ -24,7 +24,10 @@ export function AttackList({ attacks, onSelect, emptyLabel, showDate = true }: A
     <ul className="divide-y">
       {attacks.map((attack) => {
         const type = HEADACHE_TYPES.find((item) => item.id === attack.type);
-        const chips = [...attack.triggers.slice(0, 2), ...attack.symptoms.slice(0, 1)];
+        const chips = [
+          ...attack.triggers.slice(0, 2).map((id) => ({ kind: 'trigger' as const, id })),
+          ...attack.symptoms.slice(0, 1).map((id) => ({ kind: 'symptom' as const, id })),
+        ];
         return (
           <li key={attack.id}>
             <button
@@ -67,8 +70,8 @@ export function AttackList({ attacks, onSelect, emptyLabel, showDate = true }: A
                     </span>
                   )}
                   {chips.map((chip) => (
-                    <span key={chip} className="rounded-full bg-muted px-2 py-0.5">
-                      {labelFor('trigger', chip) !== chip ? labelFor('trigger', chip) : labelFor('symptom', chip)}
+                    <span key={`${chip.kind}-${chip.id}`} className="rounded-full bg-muted px-2 py-0.5">
+                      {labelFor(chip.kind, chip.id)}
                     </span>
                   ))}
                 </span>

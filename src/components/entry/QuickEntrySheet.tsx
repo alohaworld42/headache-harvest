@@ -18,7 +18,7 @@ import {
 } from '@/lib/catalog';
 import { newId } from '@/lib/storage';
 import { useApp } from '@/store/app-store';
-import type { Attack, Effectiveness, MedicationIntake } from '@/lib/types';
+import type { Attack, Effectiveness, HeadacheType, MedicationIntake } from '@/lib/types';
 import { cn } from '@/lib/utils';
 
 interface QuickEntrySheetProps {
@@ -189,6 +189,16 @@ export function QuickEntrySheet({
     setList(list.includes(id) ? list.filter((item) => item !== id) : [...list, id]);
   };
 
+  /** Whatever this person logs most often — better than filing everything as "unclear". */
+  const commonType = useMemo(() => {
+    const counts = new Map<HeadacheType, number>();
+    for (const attack of attacks) counts.set(attack.type, (counts.get(attack.type) ?? 0) + 1);
+    const ranked = [...counts.entries()]
+      .filter(([type]) => type !== 'other')
+      .sort((a, b) => b[1] - a[1]);
+    return ranked.length ? ranked[0][0] : ('other' as HeadacheType);
+  }, [attacks]);
+
   const buildDraft = () => {
     const medications: MedicationIntake[] = medication
       ? [
@@ -203,11 +213,15 @@ export function QuickEntrySheet({
       : [];
     return {
       date,
+      // Without a start time the time-of-day analysis would stay empty for
+      // everyone who only ever logs from their phone.
+      startTime: date === today ? format(new Date(), 'HH:mm') : undefined,
       durationMinutes: ongoing ? undefined : (duration ?? undefined),
       intensity: intensity ?? 5,
-      type: 'other' as const,
+      type: commonType,
       aura: false,
       locations: [],
+      qualities: [],
       symptoms,
       triggers,
       relief: [],
