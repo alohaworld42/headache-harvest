@@ -8,6 +8,8 @@ interface ProGateProps {
   onUpgrade: () => void;
   children: React.ReactNode;
   className?: string;
+  /** 'paid' excludes the trial — used for the doctor report. */
+  require?: 'pro' | 'paid';
 }
 
 /**
@@ -15,9 +17,15 @@ interface ProGateProps {
  * children would still ship them to the page, where anyone could read them by
  * removing a CSS class — and on the report it would also blur the printout.
  */
-export function ProGate({ onUpgrade, children, className }: ProGateProps) {
+export function ProGate({ onUpgrade, children, className, require = 'pro' }: ProGateProps) {
   const { t, pro } = useApp();
-  if (pro.active) return <>{children}</>;
+  const unlocked = require === 'paid' ? pro.paid : pro.active;
+  if (unlocked) return <>{children}</>;
+
+  // During the trial the generic "unlock Pro" wording would be confusing, since
+  // Pro already appears active everywhere else.
+  const title = require === 'paid' && pro.active ? t('pro.paidOnly') : t('pro.locked');
+  const body = require === 'paid' && pro.active ? t('pro.paidOnlyBody') : t('pro.lockedBody');
 
   return (
     <div
@@ -38,11 +46,11 @@ export function ProGate({ onUpgrade, children, className }: ProGateProps) {
           <Lock className="h-4 w-4 text-primary" />
         </span>
         <div className="space-y-1">
-          <p className="font-medium">{t('pro.locked')}</p>
-          <p className="max-w-sm text-sm text-muted-foreground">{t('pro.lockedBody')}</p>
+          <p className="font-medium">{title}</p>
+          <p className="max-w-sm text-sm text-muted-foreground">{body}</p>
         </div>
         <Button size="sm" onClick={onUpgrade}>
-          {t('action.upgrade')}
+          {require === 'paid' && pro.active ? t('pro.buyNow') : t('action.upgrade')}
         </Button>
       </div>
     </div>

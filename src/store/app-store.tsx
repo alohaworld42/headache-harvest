@@ -98,12 +98,14 @@ export function AppStoreProvider({ children }: { children: React.ReactNode }) {
     licenseChecked.current = true;
     const token = data.license?.token;
     if (!token) return;
-    void verifyToken(token).then((license) => {
-      if (license) {
-        persist((current) => ({ ...current, license }));
-      } else {
+    void verifyToken(token).then((result) => {
+      if (result.status === 'valid') {
+        persist((current) => ({ ...current, license: result.license }));
+      } else if (result.status === 'invalid') {
         persist((current) => ({ ...current, license: undefined }));
       }
+      // 'unreachable' keeps the licence; the verifiedAt grace period covers
+      // revocation eventually, and an offline user stays a paying user.
     });
   }, [data.license?.token, persist]);
 
