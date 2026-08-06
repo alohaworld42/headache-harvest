@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.api.json --noEmit",
     "preview": "vite preview",
-    "license": "node scripts/issue-license.mjs"
+    "license": "node scripts/issue-license.mjs",
+    "setup:stripe": "node scripts/setup-stripe.mjs"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.1",
