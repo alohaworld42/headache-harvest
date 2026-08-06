@@ -105,6 +105,19 @@ Für echte Umsätze in Vercel unter *Settings → Environment Variables* setzen:
 Für Impressum und Datenschutz zusätzlich (Build-Time, daher `VITE_`-Präfix):
 `VITE_LEGAL_NAME`, `VITE_LEGAL_ADDRESS`, `VITE_LEGAL_EMAIL`, `VITE_LEGAL_VAT_ID`.
 
+### Produkt und Preise anlegen
+
+Statt im Dashboard zu klicken:
+
+```bash
+STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe
+```
+
+Legt „Kopfweh Pro" samt Einmal- und Jahrespreis an und gibt die fertigen
+Umgebungsvariablen aus. Wiederholbar — Preise werden über einen Lookup-Key
+gefunden, nichts wird doppelt angelegt. Beträge über `--lifetime 24.99` /
+`--yearly 9.99`, nur Einmalkauf über `--yearly none`, live über `--live`.
+
 ### Lizenzschlüssel von Hand ausstellen
 
 Für Ko-fi-Zahlungen, Überweisungen oder verlorene Schlüssel:

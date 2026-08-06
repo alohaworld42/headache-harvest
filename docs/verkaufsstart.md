@@ -27,12 +27,35 @@ Erst hier existieren die Endpunkte unter `/api`, die den Kauf abwickeln.
 
 1. Bei [stripe.com](https://dashboard.stripe.com) registrieren, Geschäftsdaten und
    Bankverbindung hinterlegen (Auszahlung geht sonst nicht raus).
-2. Unter *Produktkatalog* ein Produkt „Kopfweh Pro" anlegen, dazu:
-   - einen **einmaligen** Preis, Vorschlag **17,99 €** (Migraine Buddy verlangt
-     89,99 $ **pro Jahr** — der Einmalkauf ist dein stärkstes Argument),
-   - optional einen **jährlichen** Preis, Vorschlag 7,99 €/Jahr.
-3. Die beiden Price-IDs (`price_…`) notieren.
-4. Unter *Entwickler → API-Schlüssel* den **Secret Key** kopieren.
+2. Unter *Entwickler → API-Schlüssel* den **Secret Key** kopieren. Fang mit dem
+   Testmodus an (`sk_test_…`).
+3. Produkt und Preise anlegen lassen:
+
+   ```bash
+   STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe
+   ```
+
+   Legt „Kopfweh Pro" an, einen **einmaligen** Preis zu 17,99 € (Migraine Buddy
+   verlangt 89,99 $ **pro Jahr** — der Einmalkauf ist dein stärkstes Argument)
+   und einen **jährlichen** zu 7,99 €. Andere Beträge über `--lifetime 24.99`
+   bzw. `--yearly 9.99`, nur den Einmalkauf über `--yearly none`. Am Ende stehen
+   genau die Variablen da, die unten in Vercel gehören.
+
+   Das Skript ist gefahrlos wiederholbar: Preise werden über einen Lookup-Key
+   gefunden, ein zweiter Lauf legt nichts doppelt an. Preise sind bei Stripe
+   unveränderlich — für einen anderen Betrag den alten im Dashboard archivieren
+   und neu laufen lassen.
+
+4. Wenn der Testkauf (Schritt 4 unten) sitzt, dasselbe live:
+
+   ```bash
+   LICENSE_SECRET=… STRIPE_SECRET_KEY=sk_live_… npm run setup:stripe --live
+   ```
+
+   Test- und Live-Modus sind bei Stripe getrennte Welten, die Price-IDs aus dem
+   einen gelten im anderen nicht. Ein Live-Key ohne `--live` wird abgelehnt.
+   `LICENSE_SECRET` mitgeben, sobald du eins hast — sonst schlägt dir das Skript
+   ein neues vor, und das würde alle bereits ausgegebenen Schlüssel entwerten.
 
 ## 3. Umgebungsvariablen in Vercel
 
@@ -43,7 +66,7 @@ Erst hier existieren die Endpunkte unter `/api`, die den Kauf abwickeln.
 | `STRIPE_SECRET_KEY` | `sk_live_…` |
 | `STRIPE_PRICE_LIFETIME` | Price-ID des Einmalkaufs |
 | `STRIPE_PRICE_YEARLY` | Price-ID des Abos (optional) |
-| `LICENSE_SECRET` | einmalig erzeugen: `openssl rand -base64 32` |
+| `LICENSE_SECRET` | kommt aus `npm run setup:stripe` (sonst: `openssl rand -base64 32`) |
 | `APP_URL` | `https://deine-domain.de` |
 | `STRIPE_AUTOMATIC_TAX` | `1`, sobald Stripe Tax eingerichtet ist |
 | `VITE_LEGAL_NAME` | dein Name bzw. Firmierung |
