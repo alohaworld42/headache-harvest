@@ -148,9 +148,8 @@ Die vollständige Schritt-für-Schritt-Liste (Vercel, Stripe, Umgebungsvariablen
 Testkauf, Rechtliches, laufender Betrieb) steht in
 [`docs/verkaufsstart.md`](docs/verkaufsstart.md).
 
-Was aktuell fertig ist, was als Nächstes ansteht und warum einzelne Dinge so
-gebaut sind, fasst [`docs/stand-und-naechste-schritte.md`](docs/stand-und-naechste-schritte.md)
-zusammen — der beste Einstieg, wenn man länger nicht dran war.
+Kurzfassung — offene Punkte, Fallen, getroffene Entscheidungen:
+[`docs/stand-und-naechste-schritte.md`](docs/stand-und-naechste-schritte.md).
 
 **Wichtig, bevor das Repository privat wird:** GitHub Pages liefert private
 Repositories nur mit bezahltem GitHub-Plan aus – die Vorschau-URL verschwindet sonst.
