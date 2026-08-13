@@ -41,7 +41,12 @@ Vercel-Projekt existiert und baut jeden Push:
 
 - Vercel-MCP hilft nicht, solange die Verbindung nicht auf den Scope
   `alohaworld42s-projects` autorisiert ist: `list_teams` liefert `[]`, alle
-  Projekt-, Protection- und Deploy-Endpunkte antworten `403`. Nicht erneut
+  Projekt-, Protection- und Deploy-Endpunkte antworten `403` — auch
+  `get_access_to_vercel_url` auf die Production-URL (erneut geprüft
+  2026-08-13). Das ist kein API-Problem, das eine Session lösen kann: es
+  braucht den Account-Owner, der die Vercel-Verbindung unter den
+  claude.ai-Connector-Einstellungen neu autorisiert (Scope
+  `alohaworld42s-projects` erteilen). Nicht erneut
   durchprobieren — erst neu autorisieren.
 - Preflight bricht mit Exit 2 ab, wenn Deployment Protection an ist — das ist
   „konnte nicht prüfen", nicht „geprüft und kaputt".
