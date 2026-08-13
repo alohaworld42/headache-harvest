@@ -23,7 +23,11 @@ Vercel-Projekt existiert und baut jeden Push:
    `alohaworld42s-projects`. You must re-authenticate to this scope or use a
    token with access to this scope."
 2. `STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe` → legt Produkt + Preise an,
-   gibt die Umgebungsvariablen aus. Wiederholbar.
+   gibt die Umgebungsvariablen aus. Wiederholbar. `--dry-run true` mit einem
+   Platzhalter-Key (ohne echten Stripe-Zugriff) am 2026-08-13 durchlaufen
+   lassen: Skript rechnet 17,99 €/7,99 € korrekt in Cent um, kein Absturz.
+   Ersetzt nicht den echten Lauf mit einem gültigen `STRIPE_SECRET_KEY`, den
+   nur der Account-Owner hat.
 3. Variablen in Vercel setzen (Production **und** Preview), neu deployen.
    `VITE_LEGAL_*` nicht vergessen — sie werden beim Build eingebacken, ein
    Nachtragen ohne Redeploy wirkt nicht.
