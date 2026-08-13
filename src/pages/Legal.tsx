@@ -12,6 +12,17 @@ const operator = {
   vatId: import.meta.env.VITE_LEGAL_VAT_ID ?? '',
 };
 
+/**
+ * A German imprint with placeholder operator details is not merely incomplete,
+ * it is a legal risk — and the placeholders are quiet enough to ship unnoticed.
+ * Better to say so on the page than to find out by post.
+ */
+const operatorMissing = !(
+  import.meta.env.VITE_LEGAL_NAME &&
+  import.meta.env.VITE_LEGAL_ADDRESS &&
+  import.meta.env.VITE_LEGAL_EMAIL
+);
+
 interface Block {
   heading: string;
   paragraphs: string[];
@@ -267,6 +278,13 @@ export default function Legal({ kind }: { kind: LegalKind }) {
       </Link>
 
       <h1 className="text-2xl font-semibold tracking-tight">{content.title}</h1>
+
+      {operatorMissing && (
+        <div className="rounded-xl border border-destructive/40 bg-destructive/10 p-3 text-sm">
+          <p className="font-medium">{t('legal.draftTitle')}</p>
+          <p className="mt-1 text-muted-foreground">{t('legal.draftBody')}</p>
+        </div>
+      )}
 
       <div className="space-y-6">
         {content.blocks.map((block) => (

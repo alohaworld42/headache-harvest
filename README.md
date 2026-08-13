@@ -118,6 +118,17 @@ Umgebungsvariablen aus. Wiederholbar — Preise werden über einen Lookup-Key
 gefunden, nichts wird doppelt angelegt. Beträge über `--lifetime 24.99` /
 `--yearly 9.99`, nur Einmalkauf über `--yearly none`, live über `--live`.
 
+### Deployment prüfen, bevor jemand kauft
+
+```bash
+npm run preflight -- https://deine-domain.de
+```
+
+Prüft die laufende Instanz: SPA-Rewrite auf der Stripe-Rückleitung, `/api/checkout`
+mit aufgelösten Preisen, dass `/api/license` einen gefälschten Token ablehnt, und
+dass im ausgelieferten Bundle keine Impressum-Platzhalter mehr stecken. Nur
+lesend, legt keine Checkout-Session an. Exit-Code ≠ 0 bei blockierenden Fehlern.
+
 ### Lizenzschlüssel von Hand ausstellen
 
 Für Ko-fi-Zahlungen, Überweisungen oder verlorene Schlüssel:
