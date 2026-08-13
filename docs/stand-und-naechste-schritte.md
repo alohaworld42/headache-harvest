@@ -33,7 +33,11 @@ Vercel-Projekt existiert und baut jeden Push:
    `LICENSE_SECRET=…` (sonst wird ein zweites erzeugt → alle verkauften
    Schlüssel ungültig). Danach Preflight gegen Production erneut.
 6. Rechtstexte unter `/legal/*` prüfen lassen. Solange `VITE_LEGAL_*` fehlen,
-   zeigen die Seiten einen roten Entwurfshinweis.
+   zeigen die Seiten einen roten Entwurfshinweis. Inhalt (`src/pages/Legal.tsx`)
+   am 2026-08-13 gegengelesen: Datenschutz, AGB und Impressum sind vollständig,
+   beide Sprachen konsistent, i18n-Keys vorhanden, Entwurfshinweis greift
+   korrekt ohne `VITE_LEGAL_*`. Kein Ersatz für eine echte Rechtsprüfung durch
+   eine Person — nur ein Plausibilitäts-Check ohne offensichtliche Lücken.
 7. **Erst danach** Repo privat schalten — Pages liefert private Repos nur im
    bezahlten Plan aus.
 
