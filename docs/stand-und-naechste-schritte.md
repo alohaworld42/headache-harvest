@@ -9,11 +9,16 @@ Stand: `main` @ #9. Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
 2. `STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe` → legt Produkt + Preise an,
    gibt die Umgebungsvariablen aus. Wiederholbar.
 3. Variablen in Vercel setzen (Production **und** Preview), neu deployen.
-4. Testkauf mit `4242 4242 4242 4242`. Dann dasselbe mit `--live` und
+   `VITE_LEGAL_*` nicht vergessen — sie werden beim Build eingebacken, ein
+   Nachtragen ohne Redeploy wirkt nicht.
+4. `npm run preflight -- https://…vercel.app` → prüft Endpunkte, Preise,
+   Lizenzsignatur und Impressum. Muss grün sein.
+5. Testkauf mit `4242 4242 4242 4242`. Dann dasselbe mit `--live` und
    `LICENSE_SECRET=…` (sonst wird ein zweites erzeugt → alle verkauften
-   Schlüssel ungültig).
-5. Rechtstexte unter `/legal/*` prüfen lassen, `VITE_LEGAL_*` setzen.
-6. **Erst danach** Repo privat schalten — Pages liefert private Repos nur im
+   Schlüssel ungültig). Danach Preflight gegen Production erneut.
+6. Rechtstexte unter `/legal/*` prüfen lassen. Solange `VITE_LEGAL_*` fehlen,
+   zeigen die Seiten einen roten Entwurfshinweis.
+7. **Erst danach** Repo privat schalten — Pages liefert private Repos nur im
    bezahlten Plan aus.
 
 ## Fallen

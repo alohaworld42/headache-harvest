@@ -291,6 +291,9 @@ const de = {
   'legal.terms': 'AGB',
   'legal.imprint': 'Impressum',
   'legal.backHome': 'Zurück zur App',
+  'legal.draftTitle': 'Entwurf – Betreiberangaben fehlen',
+  'legal.draftBody':
+    'Diese Seite enthält noch Platzhalter statt der Angaben zur betreibenden Person. Vor einem Verkaufsstart müssen die Variablen VITE_LEGAL_NAME, VITE_LEGAL_ADDRESS und VITE_LEGAL_EMAIL gesetzt und die Texte rechtlich geprüft werden.',
 
   'toast.exported': 'Backup gespeichert',
   'toast.imported': '{0} Einträge übernommen',
@@ -597,6 +600,9 @@ const en: Record<TranslationKey, string> = {
   'legal.terms': 'Terms',
   'legal.imprint': 'Imprint',
   'legal.backHome': 'Back to the app',
+  'legal.draftTitle': 'Draft – operator details missing',
+  'legal.draftBody':
+    'This page still shows placeholders instead of the operator details. Before selling, set VITE_LEGAL_NAME, VITE_LEGAL_ADDRESS and VITE_LEGAL_EMAIL, and have the texts reviewed by a lawyer.',
 
   'toast.exported': 'Backup saved',
   'toast.imported': '{0} entries merged',
