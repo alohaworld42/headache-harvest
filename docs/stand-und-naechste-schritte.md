@@ -1,11 +1,16 @@
 # Stand und nächste Schritte
 
-Stand: `main` @ #9. Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
+Stand: `main` @ #12. Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
+
+Vercel-Projekt existiert und baut jeden Push:
+`headache-harvest-alohaworld42s-projects.vercel.app`
 
 ## Offen — in dieser Reihenfolge
 
-1. **Vercel-Projekt** anlegen: Dashboard → *Add New → Project* → Repo importieren.
-   Vite wird erkannt, `vercel.json` liegt bei.
+1. **Deployment Protection für Production ausschalten.** Aktuell antwortet jede
+   Route mit der Vercel-SSO-Wand — niemand kann die App aufrufen, geschweige
+   denn kaufen. *Settings → Deployment Protection*. Für Previews darf sie
+   anbleiben.
 2. `STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe` → legt Produkt + Preise an,
    gibt die Umgebungsvariablen aus. Wiederholbar.
 3. Variablen in Vercel setzen (Production **und** Preview), neu deployen.
@@ -23,8 +28,10 @@ Stand: `main` @ #9. Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
 
 ## Fallen
 
-- Vercel-MCP hilft nicht: einziger Deploy-Befehl erwartet den Dateibaum inline
-  und erzeugt ein Projekt ohne Git-Anbindung.
+- Vercel-MCP hilft nicht: `403 forbidden` auf Projekt- und Deployment-Ebene,
+  auch mit Team-ID. Alles Vercel-seitige läuft über das Dashboard.
+- Preflight bricht mit Exit 2 ab, wenn Deployment Protection an ist — das ist
+  „konnte nicht prüfen", nicht „geprüft und kaputt".
 - Playwright braucht `executablePath:
   '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'`.
 - `vite preview --host 127.0.0.1`, sonst IPv6-Fehler.
