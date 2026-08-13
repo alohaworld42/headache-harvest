@@ -48,6 +48,34 @@ console.log(`\nPreflight: ${target}\n`);
 
 // --- The app itself loads -----------------------------------------------------
 const root = await get('/');
+
+// Vercel's deployment protection answers every route with an SSO wall. Without
+// this the checks below all fail for the same uninformative reason and read as
+// a broken configuration, which is the opposite of the truth. The wall shows up
+// as a redirect to sso-api on HTML routes and as a 401 JSON body on /api, so
+// both are worth asking — following the redirect only lands on a login page.
+const protectionProbe = await fetch(`${target}/`, { redirect: 'manual' })
+  .then((r) => ({ location: r.headers.get('location') ?? '' }))
+  .catch(() => ({ location: '' }));
+const apiProbe = await fetch(`${target}/api/checkout`)
+  .then((r) => r.json())
+  .catch(() => null);
+
+if (
+  apiProbe?.protection?.vercel_auth_enabled ||
+  /sso-api/.test(protectionProbe.location) ||
+  /vercel\.com\/sso-api|Authentication Required/i.test(root.text)
+) {
+  console.error(
+    '  Deployment protection is on — every route returns an SSO wall, so nothing\n' +
+      '  below can be checked.\n\n' +
+      '  Vercel → Project → Settings → Deployment Protection. Production must be\n' +
+      '  public to sell; leaving it on for previews is fine. To keep it on and still\n' +
+      '  check, create a Protection Bypass secret and append:\n' +
+      `    ?x-vercel-protection-bypass=<secret>\n`,
+  );
+  process.exit(2);
+}
 if (!root.ok) {
   fail('App reachable', `GET / returned ${root.status || root.error}`);
 } else if (!/<div id="root"/.test(root.text)) {
