@@ -11,6 +11,12 @@ Vercel-Projekt existiert und baut jeden Push:
    Route mit der Vercel-SSO-Wand — niemand kann die App aufrufen, geschweige
    denn kaufen. *Settings → Deployment Protection*. Für Previews darf sie
    anbleiben.
+
+   Alternativ die Vercel-MCP-Verbindung neu autorisieren, dann kann eine Session
+   das selbst erledigen. Aktuell antwortet jeder Vercel-Endpunkt mit:
+   „Not authorized: Trying to access resource under scope
+   `alohaworld42s-projects`. You must re-authenticate to this scope or use a
+   token with access to this scope."
 2. `STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe` → legt Produkt + Preise an,
    gibt die Umgebungsvariablen aus. Wiederholbar.
 3. Variablen in Vercel setzen (Production **und** Preview), neu deployen.
@@ -28,8 +34,10 @@ Vercel-Projekt existiert und baut jeden Push:
 
 ## Fallen
 
-- Vercel-MCP hilft nicht: `403 forbidden` auf Projekt- und Deployment-Ebene,
-  auch mit Team-ID. Alles Vercel-seitige läuft über das Dashboard.
+- Vercel-MCP hilft nicht, solange die Verbindung nicht auf den Scope
+  `alohaworld42s-projects` autorisiert ist: `list_teams` liefert `[]`, alle
+  Projekt-, Protection- und Deploy-Endpunkte antworten `403`. Nicht erneut
+  durchprobieren — erst neu autorisieren.
 - Preflight bricht mit Exit 2 ab, wenn Deployment Protection an ist — das ist
   „konnte nicht prüfen", nicht „geprüft und kaputt".
 - Playwright braucht `executablePath:
