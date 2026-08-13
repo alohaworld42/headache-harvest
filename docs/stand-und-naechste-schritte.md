@@ -1,6 +1,11 @@
 # Stand und nächste Schritte
 
-Stand: `main` @ #12. Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
+Stand: `main` @ #15 (PR #11 gemergt). Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
+
+`typecheck`, `lint`, `build` laufen grün (verifiziert 2026-08-13). Vercel-MCP
+weiterhin nicht autorisiert (`list_teams` → `[]`, `list_projects` → 403) —
+Punkt 1 unten ist unverändert der Blocker, braucht menschliche
+Re-Authentifizierung.
 
 Vercel-Projekt existiert und baut jeden Push:
 `headache-harvest-alohaworld42s-projects.vercel.app`
