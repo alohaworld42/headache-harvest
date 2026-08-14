@@ -7,7 +7,13 @@
  * and there is nothing to recover if the passphrase is lost.
  */
 
-const MAGIC = 'kopfweh-encrypted-backup';
+const MAGIC = 'schmerzverlauf-encrypted-backup';
+/**
+ * The app was called Kopfweh before, and files written under that name are the
+ * ones people are least able to recreate. Reading them stays supported forever;
+ * only new files carry the current marker.
+ */
+const LEGACY_MAGIC = 'kopfweh-encrypted-backup';
 const FORMAT_VERSION = 1;
 /** OWASP's 2023 floor for PBKDF2-HMAC-SHA256; ~0.3 s on a mid-range phone. */
 const PBKDF2_ITERATIONS = 310_000;
@@ -15,7 +21,7 @@ const SALT_BYTES = 16;
 const IV_BYTES = 12;
 
 export interface EncryptedEnvelope {
-  app: typeof MAGIC;
+  app: typeof MAGIC | typeof LEGACY_MAGIC;
   v: number;
   kdf: { name: 'PBKDF2'; hash: 'SHA-256'; iterations: number; salt: string };
   cipher: 'AES-GCM';
@@ -76,7 +82,9 @@ export async function encryptBackup(plaintext: string, passphrase: string): Prom
 export function isEncryptedBackup(text: string): boolean {
   try {
     const parsed = JSON.parse(text) as Partial<EncryptedEnvelope>;
-    return parsed.app === MAGIC && typeof parsed.data === 'string';
+    return (
+      (parsed.app === MAGIC || parsed.app === LEGACY_MAGIC) && typeof parsed.data === 'string'
+    );
   } catch {
     return false;
   }
@@ -91,7 +99,7 @@ export class WrongPassphraseError extends Error {
 
 export async function decryptBackup(text: string, passphrase: string): Promise<string> {
   const envelope = JSON.parse(text) as EncryptedEnvelope;
-  if (envelope.app !== MAGIC) throw new Error('unsupported');
+  if (envelope.app !== MAGIC && envelope.app !== LEGACY_MAGIC) throw new Error('unsupported');
   if (envelope.v > FORMAT_VERSION) throw new Error('newer_version');
 
   const key = await deriveKey(

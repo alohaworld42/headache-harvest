@@ -1,7 +1,7 @@
 export type Lang = 'de' | 'en';
 
 const de = {
-  'app.name': 'Kopfweh',
+  'app.name': 'Schmerzverlauf',
   'app.tagline': 'Das Schmerztagebuch, das Muster findet.',
   'nav.dashboard': 'Übersicht',
   'nav.calendar': 'Kalender',
@@ -10,6 +10,7 @@ const de = {
   'nav.settings': 'Einstellungen',
   'nav.reportShort': 'Bericht',
   'nav.settingsShort': 'Mehr',
+  'nav.clinicians': 'Für Behandelnde',
   'insights.trigger': 'Auslöser',
 
   'action.add': 'Eintrag',
@@ -211,7 +212,7 @@ const de = {
   'pro.donateHint':
     'Du brauchst den Arztbericht nicht, magst die App aber? Ein Kaffee hilft bei der Weiterentwicklung.',
   'pro.donateShort': 'Kaffee spendieren',
-  'pro.donateBanner': 'Kopfweh ist kostenlos nutzbar – ein Kaffee hilft bei der Weiterentwicklung.',
+  'pro.donateBanner': 'Schmerzverlauf ist kostenlos nutzbar – ein Kaffee hilft bei der Weiterentwicklung.',
 
   'backup.encrypted': 'Verschlüsseltes Backup',
   'backup.encryptedHint':
@@ -239,7 +240,7 @@ const de = {
   'backup.reminderAction': 'Backup erstellen',
   'backup.reminderDismiss': 'Später',
 
-  'pro.title': 'Kopfweh Pro',
+  'pro.title': 'Schmerzverlauf Pro',
   'pro.subtitle': 'Tiefe Auswertung, Arztbericht und Export – einmal zahlen, dauerhaft nutzen.',
   'pro.badge': 'Pro',
   'pro.active': 'Pro aktiv',
@@ -312,7 +313,7 @@ const de = {
 export type TranslationKey = keyof typeof de;
 
 const en: Record<TranslationKey, string> = {
-  'app.name': 'Kopfweh',
+  'app.name': 'Schmerzverlauf',
   'app.tagline': 'The pain diary that finds the pattern.',
   'nav.dashboard': 'Overview',
   'nav.calendar': 'Calendar',
@@ -321,6 +322,7 @@ const en: Record<TranslationKey, string> = {
   'nav.settings': 'Settings',
   'nav.reportShort': 'Report',
   'nav.settingsShort': 'More',
+  'nav.clinicians': 'For clinicians',
   'insights.trigger': 'Trigger',
 
   'action.add': 'Entry',
@@ -521,7 +523,7 @@ const en: Record<TranslationKey, string> = {
   'pro.donateHint':
     'Do not need the doctor report but like the app? A coffee keeps it moving.',
   'pro.donateShort': 'Buy a coffee',
-  'pro.donateBanner': 'Kopfweh is free to use – a coffee helps keep it going.',
+  'pro.donateBanner': 'Schmerzverlauf is free to use – a coffee helps keep it going.',
 
   'backup.encrypted': 'Encrypted backup',
   'backup.encryptedHint':
@@ -549,7 +551,7 @@ const en: Record<TranslationKey, string> = {
   'backup.reminderAction': 'Create backup',
   'backup.reminderDismiss': 'Later',
 
-  'pro.title': 'Kopfweh Pro',
+  'pro.title': 'Schmerzverlauf Pro',
   'pro.subtitle': 'Deep analysis, doctor report and export – pay once, use forever.',
   'pro.badge': 'Pro',
   'pro.active': 'Pro active',

@@ -35,7 +35,7 @@ Erst hier existieren die Endpunkte unter `/api`, die den Kauf abwickeln.
    STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe
    ```
 
-   Legt „Kopfweh Pro" an, einen **einmaligen** Preis zu 17,99 € (Migraine Buddy
+   Legt „Schmerzverlauf Pro" an, einen **einmaligen** Preis zu 17,99 € (Migraine Buddy
    verlangt 89,99 $ **pro Jahr** — der Einmalkauf ist dein stärkstes Argument)
    und einen **jährlichen** zu 7,99 €. Andere Beträge über `--lifetime 24.99`
    bzw. `--yearly 9.99`, nur den Einmalkauf über `--yearly none`. Am Ende stehen

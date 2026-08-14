@@ -1,5 +1,5 @@
 /* Minimal offline shell for the headache diary. No third party libraries involved. */
-const CACHE = 'kopfweh-v2';
+const CACHE = 'schmerzverlauf-v1';
 /* Works both at the domain root (Vercel) and under a sub-path (GitHub Pages). */
 const BASE = new URL('./', self.registration.scope).pathname;
 const SHELL = [BASE, `${BASE}manifest.webmanifest`, `${BASE}icon-192.png`, `${BASE}icon-512.png`];

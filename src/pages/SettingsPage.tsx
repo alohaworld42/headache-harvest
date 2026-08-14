@@ -79,7 +79,7 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
     }
     downloadFile(
       JSON.stringify(buildBackup(data), null, 2),
-      timestampedName('kopfweh-backup', 'json'),
+      timestampedName('schmerzverlauf-backup', 'json'),
       'application/json',
     );
     updateSettings({ lastBackupAt: new Date().toISOString() });
@@ -95,7 +95,7 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
       toast.error(t('toast.noData'));
       return;
     }
-    downloadFile(attacksToCsv(attacks, lang), timestampedName('kopfweh-export', 'csv'), 'text/csv;charset=utf-8');
+    downloadFile(attacksToCsv(attacks, lang), timestampedName('schmerzverlauf-export', 'csv'), 'text/csv;charset=utf-8');
     toast.success(t('toast.csvExported'));
   };
 
@@ -130,7 +130,7 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
   const createEncryptedBackup = async (passphrase: string) => {
     if (!attacks.length) throw new Error(t('toast.noData'));
     const payload = await encryptBackup(JSON.stringify(buildBackup(data)), passphrase);
-    downloadFile(payload, timestampedName('kopfweh-backup', 'kopfweh'), 'application/json');
+    downloadFile(payload, timestampedName('schmerzverlauf-backup', 'schmerzverlauf'), 'application/json');
     updateSettings({ lastBackupAt: new Date().toISOString() });
     toast.success(t('backup.created'));
   };
@@ -314,7 +314,7 @@ export default function SettingsPage({ onUpgrade }: { onUpgrade: () => void }) {
           <input
             ref={fileInput}
             type="file"
-            accept="application/json,.json,.kopfweh"
+            accept="application/json,.json,.schmerzverlauf,.kopfweh"
             className="hidden"
             onChange={handleImport}
           />

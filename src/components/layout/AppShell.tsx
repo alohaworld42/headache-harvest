@@ -131,6 +131,10 @@ export function AppShell({ children, onNewEntry }: AppShellProps) {
             {t('app.name')} · {t('app.tagline')}
           </span>
           <span className="ml-auto flex flex-wrap gap-x-4 gap-y-1">
+            {/* Aimed at the people who hand the app out, so it stays out of the tab bar. */}
+            <Link className="hover:text-foreground" to="/clinicians">
+              {t('nav.clinicians')}
+            </Link>
             <Link className="hover:text-foreground" to="/legal/privacy">
               {t('legal.privacy')}
             </Link>
