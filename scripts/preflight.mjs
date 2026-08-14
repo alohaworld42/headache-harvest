@@ -8,8 +8,8 @@
  * None of them show up by clicking around — the app looks fine right until
  * someone pays. This asks the deployment itself.
  *
- *   node scripts/preflight.mjs https://kopfweh.vercel.app
- *   npm run preflight -- https://kopfweh.vercel.app
+ *   node scripts/preflight.mjs https://schmerzverlauf.de
+ *   npm run preflight -- https://schmerzverlauf.de
  *
  * Read-only: it fetches public endpoints and never creates a checkout session.
  * Exits non-zero if anything blocking is wrong, so CI can gate on it.

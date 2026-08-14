@@ -71,7 +71,7 @@ export default async function handler(request: Request): Promise<Response> {
       allow_promotion_codes: 'true',
       'automatic_tax[enabled]': env('STRIPE_AUTOMATIC_TAX') === '1' ? 'true' : 'false',
       'metadata[plan]': plan,
-      'metadata[product]': 'kopfweh-pro',
+      'metadata[product]': 'schmerzverlauf-pro',
     },
   });
 

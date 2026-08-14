@@ -1,4 +1,4 @@
-# Kopfweh – Kopfschmerz- und Migräne-Kalender
+# Schmerzverlauf – Kopfschmerz- und Migräne-Kalender
 
 Eine schlanke, vollständig lokale Web-App zum Erfassen von Kopfschmerzattacken, zum
 Erkennen von Mustern und zum Erstellen eines Arztberichts.
@@ -113,7 +113,7 @@ Statt im Dashboard zu klicken:
 STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe
 ```
 
-Legt „Kopfweh Pro" samt Einmal- und Jahrespreis an und gibt die fertigen
+Legt „Schmerzverlauf Pro" samt Einmal- und Jahrespreis an und gibt die fertigen
 Umgebungsvariablen aus. Wiederholbar — Preise werden über einen Lookup-Key
 gefunden, nichts wird doppelt angelegt. Beträge über `--lifetime 24.99` /
 `--yearly 9.99`, nur Einmalkauf über `--yearly none`, live über `--live`.

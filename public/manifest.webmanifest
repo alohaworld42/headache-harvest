@@ -1,6 +1,6 @@
 {
-  "name": "Kopfweh – Kopfschmerz-Kalender",
-  "short_name": "Kopfweh",
+  "name": "Schmerzverlauf – Schmerztagebuch",
+  "short_name": "Schmerzverlauf",
   "description": "Kopfschmerzen und Migräne in Sekunden erfassen, Muster erkennen und einen Arztbericht mitnehmen. Alle Daten bleiben lokal auf dem Gerät.",
   "start_url": "./",
   "scope": "./",

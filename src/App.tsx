@@ -13,6 +13,7 @@ import CalendarPage from '@/pages/CalendarPage';
 import Dashboard from '@/pages/Dashboard';
 import InsightsPage from '@/pages/InsightsPage';
 import Legal from '@/pages/Legal';
+import Clinicians from '@/pages/Clinicians';
 import NotFound from '@/pages/NotFound';
 import ProSuccess from '@/pages/ProSuccess';
 import ReportPage from '@/pages/ReportPage';
@@ -37,7 +38,7 @@ function useReminder() {
       if (now.getHours() < hour || (now.getHours() === hour && now.getMinutes() < minute)) return;
       if (attacks.some((attack) => attack.date === today)) return;
       window.localStorage.setItem(key, today);
-      new Notification('Kopfweh', {
+      new Notification('Schmerzverlauf', {
         body:
           settings.language === 'de'
             ? 'Wie war dein Tag? Trage deinen Schmerz ein.'
@@ -99,6 +100,7 @@ function AppInner() {
           <Route path="/report" element={<ReportPage onUpgrade={openPro} />} />
           <Route path="/settings" element={<SettingsPage onUpgrade={openPro} />} />
           <Route path="/pro/success" element={<ProSuccess />} />
+          <Route path="/clinicians" element={<Clinicians />} />
           <Route path="/legal/privacy" element={<Legal kind="privacy" />} />
           <Route path="/legal/terms" element={<Legal kind="terms" />} />
           <Route path="/legal/imprint" element={<Legal kind="imprint" />} />

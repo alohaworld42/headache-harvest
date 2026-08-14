@@ -24,7 +24,7 @@
 
 import { createHmac, randomBytes } from 'node:crypto';
 
-const LOOKUP = { lifetime: 'kopfweh_pro_lifetime', yearly: 'kopfweh_pro_yearly' };
+const LOOKUP = { lifetime: 'schmerzverlauf_pro_lifetime', yearly: 'schmerzverlauf_pro_yearly' };
 const DEFAULTS = { lifetime: '17.99', yearly: '7.99', currency: 'eur' };
 
 function parseArgs(argv) {
@@ -105,7 +105,7 @@ if (!wantLifetime && !wantYearly) fail('Nothing to do — do not pass "none" for
 console.log(`\nStripe ${live ? 'LIVE' : 'test'} mode${dryRun ? ' (dry run)' : ''}`);
 
 if (dryRun) {
-  console.log(`\n  Would create product "Kopfweh Pro" with:`);
+  console.log(`\n  Would create product "Schmerzverlauf Pro" with:`);
   if (wantLifetime) console.log(`    one-off      ${(lifetimeAmount / 100).toFixed(2)} ${currency.toUpperCase()}`);
   if (wantYearly) console.log(`    yearly       ${(yearlyAmount / 100).toFixed(2)} ${currency.toUpperCase()}/year`);
   console.log('');
@@ -139,7 +139,7 @@ async function ensurePrice(kind, amount, recurring) {
     // Inclusive matches how prices are shown to consumers in the EU.
     tax_behavior: 'inclusive',
     ...(recurring ? { 'recurring[interval]': 'year' } : {}),
-    'metadata[app]': 'kopfweh',
+    'metadata[app]': 'schmerzverlauf',
     'metadata[plan]': kind,
   });
   console.log(`  ${kind.padEnd(8)} created ${price.id}  (${(amount / 100).toFixed(2)} ${currency.toUpperCase()})`);
@@ -149,18 +149,18 @@ async function ensurePrice(kind, amount, recurring) {
 let productId;
 async function ensureProduct() {
   if (productId) return productId;
-  const found = await stripe('products/kopfweh_pro', undefined, true);
+  const found = await stripe('products/schmerzverlauf_pro', undefined, true);
   if (found?.id) {
     productId = found.id;
     return productId;
   }
   const created = await stripe('products', {
-    id: 'kopfweh_pro',
-    name: 'Kopfweh Pro',
+    id: 'schmerzverlauf_pro',
+    name: 'Schmerzverlauf Pro',
     description: 'Arztbericht, Auswertung über den gesamten Zeitraum, CSV-Export und Jahresübersicht.',
     // Digital goods, so no shipping and the tax code stays explicit.
     tax_code: 'txcd_10000000',
-    'metadata[app]': 'kopfweh',
+    'metadata[app]': 'schmerzverlauf',
   });
   productId = created.id;
   console.log(`  product  created ${created.id}`);

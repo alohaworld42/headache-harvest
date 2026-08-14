@@ -30,10 +30,10 @@ Als Hauptgründe für die schwachen Noten nennt der Test zwei Punkte:
 | **Bearable** | Freemium | Sehr flexibles Symptom-Tracking über Migräne hinaus | Export nur CSV, keine arzttauglichen PDFs; Null-Werte fehlen im Export |
 | **Migraine Trail** | kostenlos (iOS) | Spracheingabe, klinisches PDF auf einen Tap | Nur iOS |
 
-## Wo Kopfweh steht
+## Wo Schmerzverlauf steht
 
 **Klarer Vorsprung — Datenschutz.** Alle Wettbewerber sind Konto- und Server-basiert.
-Migraine Buddy teilt aggregierte Daten mit Pharmapartnern. Kopfweh speichert
+Migraine Buddy teilt aggregierte Daten mit Pharmapartnern. Schmerzverlauf speichert
 ausschließlich lokal, hat kein Konto, keinen Tracker und lädt nicht einmal Web-Fonts
 nach. Das ist bei Gesundheitsdaten nach Art. 9 DSGVO ein echtes und schwer kopierbares
 Verkaufsargument — und war im Warentest ein eigenes Prüfkriterium.
@@ -61,7 +61,7 @@ eigenes Testkriterium.
   aktuell mit null Punkten verlässt.
 - *Wirksamkeitsnachweis*: ohne Studie nicht erreichbar — als Einzelprodukt realistisch
   nicht zu schließen und kein Grund, es zu versuchen.
-- *Plattform*: alle relevanten Wettbewerber sind native Apps in den Stores. Kopfweh ist
+- *Plattform*: alle relevanten Wettbewerber sind native Apps in den Stores. Schmerzverlauf ist
   eine installierbare PWA; das spart Store-Gebühren und Review-Zyklen, kostet aber
   Sichtbarkeit.
 
@@ -76,7 +76,7 @@ G Gefühlsstörung, S Sprachstörung) · Begleitsymptome (Erbrechen, Übelkeit, 
 Lichtscheu, Geruchsempfindlichkeit) · Medikament (A/B/C vorab definiert) · Anzahl der
 Einheiten · Wirkung (Ja/Nein/Wenig)
 
-Kopfweh deckt das inzwischen vollständig ab bis auf die *Anzahl der Einheiten* — dort wird
+Schmerzverlauf deckt das inzwischen vollständig ab bis auf die *Anzahl der Einheiten* — dort wird
 stattdessen die Dosis in mg erfasst, was für die Übergebrauchs-Erkennung ausreicht.
 
 ## Empfohlene Positionierung
