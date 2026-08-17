@@ -10,6 +10,10 @@ Re-Authentifizierung.
 Vercel-Projekt existiert und baut jeden Push:
 `headache-harvest-alohaworld42s-projects.vercel.app`
 
+Domain `schmerzverlauf.de` ist bei Strato registriert, aber noch nicht verbunden.
+Klickstrecke dafür: [`domain-verbinden.md`](domain-verbinden.md). Die Code-Seite
+ist vorbereitet (Punkt 1a unten), offen sind nur Vercel- und Strato-Einstellungen.
+
 ## Offen — in dieser Reihenfolge
 
 1. **Deployment Protection für Production ausschalten.** Aktuell antwortet jede
@@ -22,6 +26,13 @@ Vercel-Projekt existiert und baut jeden Push:
    „Not authorized: Trying to access resource under scope
    `alohaworld42s-projects`. You must re-authenticate to this scope or use a
    token with access to this scope."
+
+   1a. **Domain verbinden** — direkt danach, weil eine Domain vor Schritt 1 nur
+   dieselbe SSO-Wand unter schönerem Namen zeigt. In Vercel `schmerzverlauf.de`
+   und `www.` eintragen, bei Strato A-Record (`@`) und CNAME (`www`) auf die von
+   Vercel angezeigten Werte setzen, Strato-Domain-Parking abschalten. Nicht auf
+   Vercel-Nameserver umstellen — das nähme Strato die MX-Einträge weg.
+   Details und Fallstricke: [`domain-verbinden.md`](domain-verbinden.md).
 2. `STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe` → legt Produkt + Preise an,
    gibt die Umgebungsvariablen aus. Wiederholbar. `--dry-run true` mit einem
    Platzhalter-Key (ohne echten Stripe-Zugriff) am 2026-08-13 durchlaufen

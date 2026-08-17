@@ -78,6 +78,15 @@ Erst hier existieren die Endpunkte unter `/api`, die den Kauf abwickeln.
 `LICENSE_SECRET` **niemals nachträglich ändern** — alle ausgegebenen Schlüssel
 würden ungültig. Nach dem Setzen einmal neu deployen.
 
+## 3b. Domain verbinden
+
+`schmerzverlauf.de` ist bei Strato registriert. In Vercel eintragen, bei Strato
+A-Record und CNAME setzen, `APP_URL` auf die Domain zeigen lassen:
+[`domain-verbinden.md`](domain-verbinden.md).
+
+Vor dem Testkauf erledigen — sonst zeigt die Stripe-Rückleitung auf die
+`*.vercel.app`-Adresse und muss danach noch einmal geprüft werden.
+
 ## 4. Kauf einmal echt durchspielen
 
 Mit Stripes Testmodus (`sk_test_…` und Testpreise) und der Kartennummer

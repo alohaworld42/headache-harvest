@@ -19,13 +19,23 @@
     <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
     <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
 
+    <!-- Absolute, and always the live domain: the Pages preview and the *.vercel.app
+         URL serve the same app, so pointing search engines and link previews at one
+         canonical host keeps them from competing with each other. SITE_URL overrides it. -->
+    <link rel="canonical" href="%SITE_URL%/" />
+
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:site_name" content="Schmerzverlauf" />
+    <meta property="og:locale" content="de_DE" />
     <meta property="og:title" content="Schmerzverlauf – Schmerztagebuch für Kopfschmerz und Migräne" />
     <meta
       property="og:description"
       content="Migräne und Kopfschmerzen erfassen, Muster erkennen, Arztbericht drucken. Privat, offline-fähig, ohne Konto."
     />
-    <meta property="og:image" content="%BASE_URL%og-image.png" />
+    <!-- Crawlers for link previews do not resolve relative image paths. -->
+    <meta property="og:image" content="%SITE_URL%/og-image.png" />
+    <meta property="og:image:alt" content="Schmerzverlauf – Kalender und Auswertung eines Kopfschmerztagebuchs" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- No web fonts: the system stack keeps the app fast and free of third-party requests. -->
