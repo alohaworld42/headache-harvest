@@ -52,6 +52,23 @@ function useReminder() {
   }, [settings.reminderEnabled, settings.reminderTime, settings.language, attacks]);
 }
 
+/**
+ * Points the canonical link at the current route. `index.html` ships the home page as
+ * the default, which would otherwise tell search engines that every route *is* the home
+ * page — the same file is served for all of them. The origin is read back out of that
+ * tag, so the build stays the single place the live domain is configured.
+ */
+function useCanonical() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    const link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!link?.href) return;
+    // Deliberately without BASE_URL: on the GitHub Pages preview this then points at
+    // the matching page on the live domain instead of at the preview's own sub-path.
+    link.href = new URL(pathname, new URL(link.href).origin).href;
+  }, [pathname]);
+}
+
 function AppInner() {
   const { settings, updateSettings } = useApp();
   const location = useLocation();
@@ -63,6 +80,7 @@ function AppInner() {
   const isMobile = useIsMobile();
 
   useReminder();
+  useCanonical();
 
   // On phones a new entry runs through the step-by-step flow; the full form is
   // kept for editing and for wider screens where scrolling is not the bottleneck.

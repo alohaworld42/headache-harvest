@@ -86,6 +86,17 @@ Das Repository ist als Vercel-Projekt direkt deploybar (`vercel.json` liegt bei)
 Der Hostingbedarf ist minimal: statische Auslieferung über das CDN plus zwei Funktionen,
 die nur beim Kauf bzw. bei der Lizenzprüfung aufgerufen werden.
 
+### Eigene Domain
+
+`schmerzverlauf.de` liegt bei Strato und wird über DNS-Einträge mit dem Vercel-Projekt
+verbunden — Schritt für Schritt inklusive der Strato-Eigenheiten in
+[`docs/domain-verbinden.md`](docs/domain-verbinden.md).
+
+Die Domain steht im Code an einer Stelle: `SITE_URL` in `vite.config.ts` (Standard
+`https://schmerzverlauf.de`). Daraus baut der Build den `canonical`-Link, die
+Open-Graph-Tags, `robots.txt` und `sitemap.xml`. Für eine andere Adresse genügt
+`SITE_URL=https://… npm run build`.
+
 ## Bezahlung aktivieren (Stripe)
 
 Ohne Konfiguration läuft die App vollständig – der Kauf-Button meldet dann lediglich,
