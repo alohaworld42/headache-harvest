@@ -1,38 +1,31 @@
 # Stand und nächste Schritte
 
-Stand: `main` @ #15 (PR #11 gemergt). Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
+Stand: `main` @ #20. Klickstrecke: [`verkaufsstart.md`](verkaufsstart.md).
 
-`typecheck`, `lint`, `build` laufen grün (verifiziert 2026-08-13). Vercel-MCP
-weiterhin nicht autorisiert (`list_teams` → `[]`, `list_projects` → 403) —
-Punkt 1 unten ist unverändert der Blocker, braucht menschliche
-Re-Authentifizierung.
+`typecheck`, `lint`, `build` laufen grün (verifiziert 2026-08-17). Vercel-MCP ist
+seit 2026-08-17 autorisiert — `list_teams` liefert `alohaworld42s-projects`,
+Projekt- und Protection-Endpunkte antworten. Ein Tool zum Eintragen einer Custom
+Domain hat der MCP-Server allerdings nicht.
 
 Vercel-Projekt existiert und baut jeden Push:
 `headache-harvest-alohaworld42s-projects.vercel.app`
 
 Domain `schmerzverlauf.de` ist bei Strato registriert, aber noch nicht verbunden.
 Klickstrecke dafür: [`domain-verbinden.md`](domain-verbinden.md). Die Code-Seite
-ist vorbereitet (Punkt 1a unten), offen sind nur Vercel- und Strato-Einstellungen.
+ist fertig, offen sind nur Vercel- und Strato-Einstellungen.
 
 ## Offen — in dieser Reihenfolge
 
-1. **Deployment Protection für Production ausschalten.** Aktuell antwortet jede
-   Route mit der Vercel-SSO-Wand — niemand kann die App aufrufen, geschweige
-   denn kaufen. *Settings → Deployment Protection*. Für Previews darf sie
-   anbleiben.
+1. **Domain verbinden.** In Vercel `schmerzverlauf.de` und `www.` eintragen, bei
+   Strato A-Record (`@`) und CNAME (`www`) auf die von Vercel angezeigten Werte
+   setzen, Strato-Domain-Parking abschalten. Nicht auf Vercel-Nameserver
+   umstellen — das nähme Strato die MX-Einträge weg. Details und Fallstricke:
+   [`domain-verbinden.md`](domain-verbinden.md).
 
-   Alternativ die Vercel-MCP-Verbindung neu autorisieren, dann kann eine Session
-   das selbst erledigen. Aktuell antwortet jeder Vercel-Endpunkt mit:
-   „Not authorized: Trying to access resource under scope
-   `alohaworld42s-projects`. You must re-authenticate to this scope or use a
-   token with access to this scope."
-
-   1a. **Domain verbinden** — direkt danach, weil eine Domain vor Schritt 1 nur
-   dieselbe SSO-Wand unter schönerem Namen zeigt. In Vercel `schmerzverlauf.de`
-   und `www.` eintragen, bei Strato A-Record (`@`) und CNAME (`www`) auf die von
-   Vercel angezeigten Werte setzen, Strato-Domain-Parking abschalten. Nicht auf
-   Vercel-Nameserver umstellen — das nähme Strato die MX-Einträge weg.
-   Details und Fallstricke: [`domain-verbinden.md`](domain-verbinden.md).
+   **Deployment Protection muss dafür nicht ausgeschaltet werden.** Sie läuft im
+   Modus `all_except_custom_domains` (geprüft 2026-08-17), nimmt Custom Domains
+   also aus: `schmerzverlauf.de` ist ab dem Verbinden ohne Login erreichbar,
+   `*.vercel.app` bleibt privat. Genau die gewünschte Konstellation.
 2. `STRIPE_SECRET_KEY=sk_test_… npm run setup:stripe` → legt Produkt + Preise an,
    gibt die Umgebungsvariablen aus. Wiederholbar. `--dry-run true` mit einem
    Platzhalter-Key (ohne echten Stripe-Zugriff) am 2026-08-13 durchlaufen
@@ -58,21 +51,20 @@ ist vorbereitet (Punkt 1a unten), offen sind nur Vercel- und Strato-Einstellunge
 
 ## Fallen
 
-- Vercel-MCP hilft nicht, solange die Verbindung nicht auf den Scope
-  `alohaworld42s-projects` autorisiert ist: `list_teams` liefert `[]`, alle
-  Projekt-, Protection- und Deploy-Endpunkte antworten `403` — auch
-  `get_access_to_vercel_url` auf die Production-URL (erneut geprüft
-  2026-08-13). Auch **mit** explizit mitgegebener `teamId`
-  (`team_G1iT9qtbmMhqZhi2zdk5rsqp`) und `projectId`
-  (`prj_9ZYWihhAApiVvgze83Kh9uZOmcLa`, beide aus dem Vercel-Bot-Kommentar an
-  PR #20) kommt `403` zurück — es fehlt also nicht die ID, sondern die
-  Autorisierung. Das ist kein API-Problem, das eine Session lösen kann: es
-  braucht den Account-Owner, der die Vercel-Verbindung unter den
-  claude.ai-Connector-Einstellungen neu autorisiert (Scope
-  `alohaworld42s-projects` erteilen). Nicht erneut
-  durchprobieren — erst neu autorisieren.
-- Preflight bricht mit Exit 2 ab, wenn Deployment Protection an ist — das ist
-  „konnte nicht prüfen", nicht „geprüft und kaputt".
+- Vercel-MCP kann **keine Custom Domain eintragen**. Der Server hat dafür kein
+  Tool: `check_domain_availability_and_price` und `get_domain_order` beziehen
+  sich auf den Kauf über Vercel, nicht auf das Zuordnen einer fremd
+  registrierten Domain. Bleibt Dashboard-Handarbeit oder ein Vercel-Token gegen
+  `POST /v10/projects/{id}/domains`.
+- „Connector verbunden" ≠ „Team autorisiert". Der Connector kann in
+  `ListConnectors` als `connected: true` stehen, während `list_teams` `[]`
+  liefert und jeder Projekt-Endpunkt `403` gibt — dann deckt das OAuth-Grant das
+  Team nicht ab, und auch explizit mitgegebene `teamId`/`projectId` helfen
+  nicht. Fix ist eine Re-Autorisierung, bei der das Team ausgewählt wird
+  (2026-08-17 so passiert und behoben).
+- Preflight bricht mit Exit 2 ab, wenn er gegen die SSO-Wand läuft — das ist
+  „konnte nicht prüfen", nicht „geprüft und kaputt". Gegen `schmerzverlauf.de`
+  darf das nicht passieren, gegen `*.vercel.app` ist es zu erwarten.
 - Playwright braucht `executablePath:
   '/opt/pw-browsers/chromium-1194/chrome-linux/chrome'`.
 - `vite preview --host 127.0.0.1`, sonst IPv6-Fehler.

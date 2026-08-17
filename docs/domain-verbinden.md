@@ -4,17 +4,16 @@ Die Domain liegt bei Strato, die App läuft auf Vercel. Verbunden wird das über
 **DNS-Einträge bei Strato**, die auf Vercel zeigen — die Domain bleibt dabei bei
 Strato registriert, es wird nichts umgezogen.
 
-Reihenfolge einhalten. Schritt 0 ist kein Vorgeplänkel: solange er offen ist,
-zeigt auch die eigene Domain nur die Vercel-Login-Wand.
+## Deployment Protection steht nicht im Weg
 
-## 0. Deployment Protection ausschalten
+Das Projekt hat Vercel Authentication an, aber im Modus
+`all_except_custom_domains` (geprüft 2026-08-17 über
+`get_project_deployment_protection`). Custom Domains sind davon **ausgenommen**:
+`schmerzverlauf.de` ist ab dem Verbinden ohne Login erreichbar, während die
+`*.vercel.app`-Adressen hinter der SSO-Wand bleiben.
 
-*Vercel → Projekt → Settings → Deployment Protection → Vercel Authentication*
-für **Production** auf `Disabled`.
-
-Aktuell beantwortet das Projekt jede Anfrage mit der Vercel-SSO-Seite. Eine
-eigene Domain ändert daran nichts — sie zeigt dann dieselbe Wand, nur unter
-schönerem Namen. Für Preview-Deployments darf der Schutz anbleiben.
+Das ist die brauchbare Konstellation — Vorschau-URLs privat, Live-Domain
+öffentlich. Der Schutz muss dafür nicht angefasst werden.
 
 ## 1. Domain in Vercel eintragen
 
@@ -102,8 +101,9 @@ Prüft SPA-Rewrite auf der Stripe-Rückleitung, `/api/checkout` mit aufgelösten
 Preisen, dass `/api/license` einen gefälschten Token ablehnt, und dass keine
 Impressum-Platzhalter mehr im Bundle stecken.
 
-Bricht das Skript mit Exit 2 ab, ist Deployment Protection noch an (Schritt 0) —
-das heißt „konnte nicht prüfen", nicht „geprüft und kaputt".
+Bricht das Skript mit Exit 2 ab, läuft es gegen die SSO-Wand — das heißt „konnte
+nicht prüfen", nicht „geprüft und kaputt". Gegen `schmerzverlauf.de` darf das
+nicht passieren; gegen eine `*.vercel.app`-Adresse ist es zu erwarten.
 
 Danach von Hand: `https://schmerzverlauf.de/legal/imprint` direkt aufrufen (nicht
 über die Navigation) — lädt die Seite, greift der SPA-Rewrite. Und
