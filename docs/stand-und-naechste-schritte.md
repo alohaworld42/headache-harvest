@@ -62,7 +62,11 @@ ist vorbereitet (Punkt 1a unten), offen sind nur Vercel- und Strato-Einstellunge
   `alohaworld42s-projects` autorisiert ist: `list_teams` liefert `[]`, alle
   Projekt-, Protection- und Deploy-Endpunkte antworten `403` — auch
   `get_access_to_vercel_url` auf die Production-URL (erneut geprüft
-  2026-08-13). Das ist kein API-Problem, das eine Session lösen kann: es
+  2026-08-13). Auch **mit** explizit mitgegebener `teamId`
+  (`team_G1iT9qtbmMhqZhi2zdk5rsqp`) und `projectId`
+  (`prj_9ZYWihhAApiVvgze83Kh9uZOmcLa`, beide aus dem Vercel-Bot-Kommentar an
+  PR #20) kommt `403` zurück — es fehlt also nicht die ID, sondern die
+  Autorisierung. Das ist kein API-Problem, das eine Session lösen kann: es
   braucht den Account-Owner, der die Vercel-Verbindung unter den
   claude.ai-Connector-Einstellungen neu autorisiert (Scope
   `alohaworld42s-projects` erteilen). Nicht erneut
